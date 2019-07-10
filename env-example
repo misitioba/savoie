@@ -1,0 +1,6 @@
+DEBUG=app*
+MYSQL_HOST=localhost
+MYSQL_USER=root
+MYSQL_PWD=*****
+MYSQL_DATABASE=example
+MYSQL_PORT=3306
