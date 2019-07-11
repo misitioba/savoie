@@ -1,0 +1,20 @@
+version: '3.1'
+
+services:
+  savoie:
+    restart: always
+    build: ./
+    container_name: savoie
+    ports:
+      - 7373:3000
+    env_file: .env
+    entrypoint: 
+      - yarn
+      - start:docker      
+    networks:
+      - default
+
+networks:
+  default:
+    external:
+      name: misitioba-platform_backend

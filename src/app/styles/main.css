@@ -1,0 +1,121 @@
+body {
+    margin: 0px;
+    padding: 0px;
+}
+
+header img {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    display: block;
+}
+
+.header_wrapper {
+    background-color: rgba(204, 0, 0, 0.85);
+    margin-bottom: 0px;
+}
+
+header {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    grid-template-areas: 'header header';
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header ul {
+    padding: 0px;
+    width: max-content;
+    justify-self: flex-end;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+header ul li {
+    display: inline;
+    padding: 10px;
+    background-color: white;
+}
+
+header a {
+    color: #848a98;
+}
+
+footer {
+    background-color: #222;
+    padding: 20px;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+footer p {
+    color: white;
+    text-align: center;
+}
+
+.app_content {
+    min-height: calc(100vh - 200px);
+}
+
+header .logo {
+    display: grid;
+    grid-template-columns: 40% 60%;
+    grid-template-areas: 'logo logo';
+}
+
+header .logo .logo_text {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 60% 40%;
+    grid-template-areas: 'title' 'quote';
+    padding: 5px;
+}
+
+header .logo .logo_text__brand {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+}
+
+header .logo .logo_text__brand a {
+    font-size: 35px;
+    color: white;
+}
+
+header .logo .logo_text__quote {
+    font-size: 12px;
+    color: white;
+}
+
+.btn {
+    max-width: 200px;
+    min-height: 50px;
+    background-color: #2750CFBA;
+    color: white;
+    font-weight: bold;
+    border: 0px;
+    border-radius: 5px;
+}
+
+.btn:hover {
+    background-color: #5C9CE7;
+}
+
+@media only screen and (max-width: 639px) {
+    header {
+        grid-template-columns: 1fr;
+        grid-template-areas: 'header';
+    }
+    header ul {
+        margin-top: 20px;
+        justify-self: center;
+    }
+}
+
+@media only screen and (max-width: 1047px) {}
+
+@media only screen and (min-width: 1048px) {}

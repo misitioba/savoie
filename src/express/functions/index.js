@@ -78,6 +78,9 @@ function onError (err) {
 }
 
 function printKeys(object = {}){
+  if(!object){
+    return object;
+  }
   let keys = Object.keys(object);
   if(keys.length>10){
     let count = keys.length;

@@ -1,0 +1,28 @@
+html
+    title Savoie - Admin
+    link(rel="stylesheet", href="/styles/main.css", attr)
+    link(rel="stylesheet", href="/admin_pages/home/home.css", attr)
+body
+    .app
+        include ../../partials/header.pug
+        .app_content
+
+            .home_banner
+                p.home_quote.
+                    Nous sommes la première <span class="highlight">coopérative technologique</span>  du département de la Savoie spécialisée dans la création d’outils 
+                    décentralisés et 
+                    <span class="highlight">«open source»</span>
+                    pour les entrepreneurs et les coopératives locaux afin d’aider à l’organisation et à la collaboration, au sein des organisations ou entre elles, ainsi qu’au 
+                    <span class="highlight">développement numérique</span>
+                    .
+            
+            form.request_demo
+                p.request_demo Votre email
+                input(v-model="form.email")
+                button.btn(type="button" @click="requestDemo") Je veux une démonstration
+        
+        include ../../partials/footer.pug
+
+script(src="https://unpkg.com/vue@2.6.10/dist/vue.js")
+script(src="https://unpkg.com/axios@0.2.1/dist/axios.min.js")
+script(src="/admin_pages/home/home.js")

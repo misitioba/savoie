@@ -1,0 +1,32 @@
+p.home_quote {
+    text-align: center;
+    padding: 20px;
+    font-size: 25px;
+    max-width: 800px;
+    margin: 0 auto;
+    color: white;
+}
+
+.home_quote .highlight {
+    font-size: 28px;
+    font-weight: bold;
+}
+
+form.request_demo {
+    display: flex;
+    flex-direction: column;
+    max-width: 400px;
+    margin: 50px auto;
+}
+
+form.request_demo button {
+    margin-top: 15px;
+}
+
+.home_banner {
+    background: linear-gradient( rgba(204, 0, 0, .85), rgba(204, 0, 0, 0.85)), url('/static/images/backgrounds/code.jpg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    padding: 20px;
+}

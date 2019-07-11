@@ -6,13 +6,25 @@ var utils = require('./utils');
 
 	await builder.transformFile({
 		target: '/index.html',
-		source: "src/admin/pages/home/home.pug",
+		source: "src/app/pages/home/home.pug",
 		mode: 'pug',
 		transform:[
 			utils.cacheCDNScripts
 		],
 		context: {
 			
+		}
+	});
+
+	await builder.transformFile({
+		target: '/login/index.html',
+		source: "src/app/pages/login/login.pug",
+		mode: 'pug',
+		transform:[
+			utils.cacheCDNScripts
+		],
+		context: {
+			isDevelopment: process.env.NODE_ENV!=='production'
 		}
 	})
 	

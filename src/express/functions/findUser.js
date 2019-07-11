@@ -1,5 +1,15 @@
 module.exports = app => {
-  return async function findUser (query) {
+  return async function findUser (query = {}) {
+    
+    if(!query){
+      throw new Error('findUser: provide query')
+    }
+    if(typeof query !== 'object'){
+      query = {
+        id: query
+      };
+    }
+    
     let conn = await app.getMysqlConnection();
     let field = 'id'
     if (query.email) {
