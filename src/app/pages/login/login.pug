@@ -1,7 +1,9 @@
-html
-    title Savoie - Login
+extends ../../partials/layout-app.pug
+block head
     link(rel="stylesheet", href="/admin_pages/login/login.css", attr)
-body
+block scripts
+    script(src="/admin_pages/login/login.js")
+block content
     form
         label Email
         input(v-model="form.email")
@@ -12,7 +14,3 @@ body
             button(@click="check" type="button") Check
             button(@click="logout" type="button") Logout
             button(@click="changePassword" type="button") Change password
-
-script(src="https://unpkg.com/vue@2.6.10/dist/vue.js")
-script(src="https://unpkg.com/axios@0.2.1/dist/axios.min.js")
-script(src="/admin_pages/login/login.js")

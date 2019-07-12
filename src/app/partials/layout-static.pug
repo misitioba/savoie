@@ -1,0 +1,16 @@
+html
+    head
+        include ../partials/head.pug
+        block head
+    body
+        block beforeApp
+        .app
+            block beforeHeader
+            include ../partials/header.pug
+            block afterHeader
+            .app_content
+                block content
+            block beforeFooter
+            include ../partials/footer.pug
+            block afterFooter
+        block afterApp

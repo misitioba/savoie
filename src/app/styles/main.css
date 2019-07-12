@@ -57,8 +57,16 @@ footer p {
     text-align: center;
 }
 
+footer a {
+    color: white;
+    text-align: center;
+}
+
 .app_content {
     min-height: calc(100vh - 200px);
+    max-width: 1200px;
+    padding: 20px;
+    margin: 0 auto;
 }
 
 header .logo {
@@ -103,6 +111,14 @@ header .logo .logo_text__quote {
 
 .btn:hover {
     background-color: #5C9CE7;
+}
+
+.tools_list {
+    padding: 0;
+}
+
+.tools_list__item {
+    display: inline;
 }
 
 @media only screen and (max-width: 639px) {

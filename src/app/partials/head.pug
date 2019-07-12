@@ -1,3 +1,19 @@
+if head.title
+    title!=head.title + ' - ' + head.titlePrefix
+else
+    title!=head.titlePrefix
+
+meta(name='viewport', content='width=device-width, initial-scale=1')
+if head.description
+    meta(name='description', content=head.description)
+else    
+    meta(name='description', content='Coopérative technologique du département de la Savoie spécialisée dans la création d’outils décentralisés et «open source» pour les entrepreneurs et les coopératives locaux afin d’aider à l’organisation et à la collaboration, ainsi qu’au développement numérique. ')
+meta(name='keywords', content='numérique digital cooperative technique opensource entrepreneurs savoie')
+meta(name='robots', content='index, follow')
+meta(http-equiv='Content-Type', content='text/html; charset=utf-8')
+
+link(rel="stylesheet", href="/styles/main.css", attr)
+
 script(src="https://www.googletagmanager.com/gtag/js?id=UA-60303213-15" cache="0")
 script(src="/static/lib/ga.js")
     
