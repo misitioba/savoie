@@ -44,7 +44,10 @@ server.use('/admin_pages', express.static('src/app/pages'))
 server.use('/styles', express.static('src/app/styles'))
 server.use('/api', require('./express/api'))
 
-generateProject().then(() => {
+generateProject().then(async () => {
+
+  await server.generateRestClient();
+
   loadModules().then(listen)
 })
 
@@ -61,22 +64,23 @@ async function loadModules () {
       let name = module.title
         .split(' ')
         .join('-')
-        .toLowerCase();
-      server.builder.distFolder = `dist/${name}`;
-      server.builder.cwd = module.path;
+        .toLowerCase()
+      server.builder.distFolder = `dist/${name}`
+      server.builder.cwd = module.path
       try {
-        await require(module.path)(server);
-        debug(`${module.title} loaded as ${name}`);
+        module.name = name
+        await require(module.path)(server, module)
+        debug(`${module.title} loaded as ${name}`)
       } catch (err) {
         debug(`${module.title} load error`, {
           err: err.stack
-        });
+        })
       }
-      server.builder.distFolder = '';
-      server.builder.cwd = '';
-    })();
-  });
-  await Promise.all(promises);
+      server.builder.distFolder = ''
+      server.builder.cwd = ''
+    })()
+  })
+  await Promise.all(promises)
 }
 
 function listen () {

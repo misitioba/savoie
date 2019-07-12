@@ -100,6 +100,7 @@ header .logo .logo_text__quote {
 }
 
 .btn {
+    font-size: 14px;
     max-width: 200px;
     min-height: 50px;
     background-color: #2750CFBA;
