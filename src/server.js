@@ -65,11 +65,17 @@ async function loadModules () {
         .split(' ')
         .join('-')
         .toLowerCase()
-      server.builder.distFolder = `dist/${name}`
-      server.builder.cwd = module.path
+      
+        
       try {
         module.name = name
-        await require(module.path)(server, module)
+        let requirePath = require('path').join(process.cwd(),'apps',module.name)
+        module.basePath = requirePath;
+        server.builder.distFolder = `dist/${name}`
+        server.builder.cwd = module.basePath
+        
+        module.getPath = p => require('path').join(requirePath,p)
+        await require(requirePath)(server, module)
         debug(`${module.title} loaded as ${name}`)
       } catch (err) {
         debug(`${module.title} load error`, {

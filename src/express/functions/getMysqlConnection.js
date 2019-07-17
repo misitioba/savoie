@@ -8,13 +8,16 @@ module.exports = app => {
       return conns[database]
     }
     const mysql = require('mysql2/promise')
-    
-    conns[database] = await mysql.createConnection({
-      host: process.env.MYSQL_URI || 'localhost',
+    let credentials = {
+      host: process.env.MYSQL_HOST || 'localhost',
       user: process.env.MYSQL_USER,
       password: process.env.MYSQL_PWD,
       database
+    }
+    console.log('getMysqlConnection',{
+      credentials:'HIDDEN'
     })
+    conns[database] = await mysql.createConnection(credentials)
     // debug(`Using password? ${!!process.env.MYSQL_PWD}`)
     return conns[database]
   }
