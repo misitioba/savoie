@@ -10,11 +10,15 @@ services:
     env_file: .env
     entrypoint: 
       - yarn
-      - start:docker      
+      - start:docker   
+    volumes:
+      - ./.env:/app/.env  
+      - ./src:/app/src
+      - ./apps:/app/apps
     networks:
       - default
 
 networks:
   default:
     external:
-      name: misitioba-platform_backend
+      name: wraddy_backend
