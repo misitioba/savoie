@@ -11,7 +11,15 @@ new Vue({
         //location.href = '/login'
     },
     methods: {
+        TryDemo(){
+            analytics.track("ClickedTryBasketHotDemo", {
+                
+            });
+        },
         async requestDemo() {
+            analytics.track("ClickedRequestDemo", {
+                email: this.form.email
+            });
             if (!this.form.email) {
                 alert('Nous avons besoin de votre email pour vous contacter');
                 return;
@@ -20,6 +28,8 @@ new Vue({
             console.log(`result`, {
                 result
             });
+            this.form.email=""
+            alert('Merci!, nous vous contacterons bientôt.')
         }
     }
 })

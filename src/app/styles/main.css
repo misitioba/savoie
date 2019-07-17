@@ -108,6 +108,8 @@ header .logo .logo_text__quote {
     font-weight: bold;
     border: 0px;
     border-radius: 5px;
+    padding: 10px;
+    text-decoration: none;
 }
 
 .btn:hover {
