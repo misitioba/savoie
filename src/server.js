@@ -44,10 +44,12 @@ server.use('/admin_pages', express.static('src/app/pages'))
 server.use('/styles', express.static('src/app/styles'))
 server.use('/api', require('./express/api'))
 
+
+
+
 generateProject().then(async () => {
-
+  server.configureFunql()
   await server.generateRestClient();
-
   loadModules().then(listen)
 })
 
