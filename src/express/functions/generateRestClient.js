@@ -19,10 +19,16 @@ module.exports = app => {
             handler: function() {
                 return axios.get('/api/auth/logout');
             }
+        }, {
+            name: 'funql',
+            handler: function(p = {}) {
+                if (p.transform) p.transform = p.transform.toString()
+                return axios.post('/funql', p);
+            }
         }]
 
         let bundle = `
-            let api = {}
+            window.api = {}
         `
         methods.forEach(m => {
             bundle += `api.${m.name} = function(p){
