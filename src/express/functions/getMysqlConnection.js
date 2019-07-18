@@ -4,9 +4,9 @@ module.exports = app => {
   return async function getMysqlConnection (options = {}) {
 	let database =
 	options.dbName || process.env.MYSQL_DATABASE || 'express_test'
-    if (conns[database]) {
-      return conns[database]
-    }
+    //if (conns[database]) {
+    //  return conns[database]
+    //}
     const mysql = require('mysql2/promise')
     let credentials = {
       host: process.env.MYSQL_HOST || 'localhost',
