@@ -10,7 +10,7 @@ services:
     env_file: .env
     entrypoint: 
       - yarn
-      - start:docker   
+      - start   
     volumes:
       - ./.env:/app/.env  
       - ./src:/app/src

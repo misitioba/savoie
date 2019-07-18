@@ -26,7 +26,6 @@
     },
     "scripts": {
         "dev": "nodemon src/server.js -e js,css,scss,html,pug --watch src/app --watch src/server.js --watch src/express --watch lib --watch apps --ignore apps/*/static",
-        "start:docker": "rm -rf node_modules && ln -s /tmp/node_modules node_modules && node ./src/server.js",
-        "deploy": "docker-compose up -d --force-recreate"
+        "start": "rm -rf node_modules && ln -s /tmp/node_modules node_modules && node ./src/server.js"
     }
 }
