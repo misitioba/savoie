@@ -106,7 +106,8 @@ select {
 select,
 .btn,
 span,
-label {
+label,
+a {
     font-family: GT Eesti Display, "Helvetica Neue", Helvetica, sans-serif;
 }
 
