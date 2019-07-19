@@ -99,12 +99,23 @@ header .logo .logo_text__quote {
     color: white;
 }
 
+select {
+    background-color: #B5A075;
+}
+
+select,
+.btn,
+span,
+label {
+    font-family: GT Eesti Display, "Helvetica Neue", Helvetica, sans-serif;
+}
+
 .btn {
     cursor: pointer;
     font-size: 14px;
     max-width: 200px;
     min-height: 50px;
-    background-color: #3599C1;
+    background-color: #B5A075;
     color: white;
     font-weight: bold;
     border: 0px;
@@ -113,8 +124,24 @@ header .logo .logo_text__quote {
     text-decoration: none;
 }
 
+.btn-danger {
+    background-color: #ff00007d;
+}
+
+.btn.btn-danger:hover {
+    background-color: #ff00009c;
+}
+
+.btn-black {
+    background-color: #916f6f;
+}
+
+.btn.btn-black:hover {
+    background-color: #4f3b3b;
+}
+
 .btn:hover {
-    background-color: #83C6E1;
+    background-color: #9D8A61;
 }
 
 .tools_list {

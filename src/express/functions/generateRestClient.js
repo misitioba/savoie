@@ -45,7 +45,7 @@ module.exports = app => {
                       }
                     }).catch(onError)
                     function onError(err){
-                        console.warn('api ${m.name}', err.stack)
+                        console.warn('api ${m.name}', err.stack || err)
                         reject(err)
                     }
                 })

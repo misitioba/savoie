@@ -14,9 +14,7 @@ module.exports = app => {
       password: process.env.MYSQL_PWD,
       database
     }
-    console.log('getMysqlConnection',{
-      credentials:'HIDDEN'
-    })
+    
     conns[database] = await mysql.createConnection(credentials)
     // debug(`Using password? ${!!process.env.MYSQL_PWD}`)
     return conns[database]
