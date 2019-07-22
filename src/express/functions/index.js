@@ -53,13 +53,14 @@ function onReady (app, fn, impl) {
         return new Promise(async (resolve, reject) => {
           try {
             r = await r
+            /*
             debug(
               'call',
               fn.name,
               r instanceof Array
                 ? 'Responded with ' + r.length + ' items'
                 : `Responded with object ${printKeys(r)}`
-            )
+            ) */
             resolve(r)
           } catch (err) {
             debug('call', fn.name, `Responded with error`, `${err.stack}`.red)
@@ -67,13 +68,14 @@ function onReady (app, fn, impl) {
           }
         })
       } else {
+        /*
         debug(
           'call',
           fn.name,
           r instanceof Array
             ? 'Responded with ' + r.length + ' items'
             : `Responded with object ${printKeys(r)}`
-        )
+        ) */
         return r
       }
     }
