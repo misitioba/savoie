@@ -1,13 +1,13 @@
 var debug = require('debug')(
-        `app:express:api:functions ${`${Date.now()}`.white}` )
+        `app:express:api:functions ${`${Date.now()}`.white}`
+)
 module.exports = app => {
-        return async function loadApiFunctions(options = {}) {
-                // options.path
-                
-   
+  return async function loadApiFunctions (options = {}) {
+    // options.path
+
     var path = require('path')
-    //let readdirPath = path.join(process.cwd(), options.path)
-    let readdirPath = options.path;
+    // let readdirPath = path.join(process.cwd(), options.path)
+    let readdirPath = options.path
     var sander = require('sander')
     let files = await sander.readdir(readdirPath)
     files = files
@@ -17,9 +17,9 @@ module.exports = app => {
       })
 
     var self = {}
-    
+
     files.forEach(f => {
-        let requirePath = path.join(options.path,f)
+      let requirePath = path.join(options.path, f)
       self[f.split('.')[0]] = require(requirePath)
     })
     Object.keys(self)
@@ -33,7 +33,9 @@ module.exports = app => {
       .forEach(fn => {
         let impl = fn.handler(app)
         if (impl instanceof Promise) {
-          impl.then(handler => onReady(app, fn, handler, options)).catch(onError)
+          impl
+            .then(handler => onReady(app, fn, handler, options))
+            .catch(onError)
         } else {
           onReady(app, fn, impl, options)
         }
@@ -41,64 +43,65 @@ module.exports = app => {
   }
 }
 
-
-
 function onReady (app, fn, impl, options = {}) {
-    app.api = app.api || [];
-    if (typeof app.api[fn.name] !== 'undefined') {
-      debug('API Function file', fn.name, 'exists. Skipping...')
-    } else {
-      debug('API Function file', fn.name, 'loaded')
-      app.api[fn.name] = function () {
-        let r = impl.apply(options.scope||{}, arguments)
-        if (r instanceof Promise) {
-          return new Promise(async (resolve, reject) => {
-            try {
-              r = await r
-              debug(
-                'api call',
-                fn.name,
-                r instanceof Array ? ('Responded with '+r.length + ' items') : `Responded with object ${printKeys(r)}`
-              )
-              resolve(r)
-            } catch (err) {
-              debug(
-                'api call',
-                fn.name,
-                `Responded with error`,
-                `${err.stack}`.red
-              )
-              reject(err)
-            }
-          })
-        } else {
-          debug(
-            'api call',
-            fn.name,
-            r instanceof Array ? ('Responded with '+r.length + ' items') : `Responded with object ${printKeys(r)}`
-          )
-          return r
-        }
+  app.api = app.api || []
+  if (typeof app.api[fn.name] !== 'undefined') {
+    debug('API Function file', fn.name, 'exists. Skipping...')
+  } else {
+    // debug('API Function file', fn.name, 'loaded')
+    app.api[fn.name] = function () {
+      let r = impl.apply(options.scope || {}, arguments)
+      if (r instanceof Promise) {
+        return new Promise(async (resolve, reject) => {
+          try {
+            r = await r
+            debug(
+              'api call',
+              fn.name,
+              r instanceof Array
+                ? 'Responded with ' + r.length + ' items'
+                : `Responded with object ${printKeys(r)}`
+            )
+            resolve(r)
+          } catch (err) {
+            debug(
+              'api call',
+              fn.name,
+              `Responded with error`,
+              `${err.stack}`.red
+            )
+            reject(err)
+          }
+        })
+      } else {
+        debug(
+          'api call',
+          fn.name,
+          r instanceof Array
+            ? 'Responded with ' + r.length + ' items'
+            : `Responded with object ${printKeys(r)}`
+        )
+        return r
       }
     }
-    
   }
-  
-  function onError (err) {
-    console.error('ERROR (Function)', err.stack || err)
-    process.exit(1)
+}
+
+function onError (err) {
+  console.error('ERROR (Function)', err.stack || err)
+  process.exit(1)
+}
+
+function printKeys (object = {}) {
+  if (!object) {
+    return object
   }
-  
-  function printKeys(object = {}){
-    if(!object){
-      return object;
-    }
-    let keys = Object.keys(object);
-    if(keys.length>10){
-      let count = keys.length;
-      keys = keys.filter((k,index)=>index<10);
-      return `{${keys.join(', ')}... (${count} more)}`
-    }else{
-      return `{${keys.join(', ')}}`
-    }
+  let keys = Object.keys(object)
+  if (keys.length > 10) {
+    let count = keys.length
+    keys = keys.filter((k, index) => index < 10)
+    return `{${keys.join(', ')}... (${count} more)}`
+  } else {
+    return `{${keys.join(', ')}}`
   }
+}
