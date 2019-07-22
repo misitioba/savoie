@@ -25,6 +25,7 @@
         "nodemon": "^1.19.1",
         "promise-sequential": "^1.1.1",
         "pug": "^2.0.4",
+        "rimraf": "^2.6.3",
         "sander": "^0.6.0",
         "style-loader": "^0.23.1",
         "vue": "^2.6.10",

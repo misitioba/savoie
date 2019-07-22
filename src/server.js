@@ -1,12 +1,9 @@
 require('dotenv').config({ silent: true })
-
+require('colors')
 const express = require('express')
 const server = express()
-
-require('colors')
 require('./express/functions')(server)
 
-// parse json
 const bodyParser = require('body-parser')
 server.use(
     bodyParser.json({
@@ -44,56 +41,21 @@ server.use('/admin_pages', express.static('src/app/pages'))
 server.use('/styles', express.static('src/app/styles'))
 server.use('/api', require('./express/api'))
 
-generateProject().then(async () => {
+/*
+//generateProject().then(
+  function generateProject () {
+    return require('./app/generator')(server) // promise
+  }
+  */
+
+asyncInit()
+
+async function asyncInit () {
+  server.builder = require('../lib/builder')
   server.configureFunql()
   await server.generateRestClient()
-  loadModules().then(listen)
-})
-
-function generateProject () {
-  return require('./app/generator')(server) // promise
-}
-
-async function loadModules () {
-  let conn = await server.getMysqlConnection()
-  var debug = require('debug')(`app:modules ${`${Date.now()}`.white}`)
-  let [modules, fields] = await conn.execute(
-    `SELECT * FROM modules WHERE enabled = 1`,
-    []
-  )
-  let promises = modules.map(module => {
-    return () =>
-      (async function () {
-        let name = module.title
-          .split(' ')
-          .join('-')
-          .toLowerCase()
-
-        try {
-          module.name = name
-          let requirePath = require('path').join(
-            process.cwd(),
-            'apps',
-            module.name
-          )
-          module.basePath = requirePath
-          server.builder.distFolder = `dist/${name}`
-          server.builder.cwd = module.basePath
-          module.getPath = p => require('path').join(requirePath, p)
-          module.getRouteName = p => require('path').join('/' + module.name, p)
-          await require(requirePath)(server, module)
-          debug(`${module.title} loaded as ${name}`)
-        } catch (err) {
-          debug(`${module.title} load error`, {
-            err: err.stack
-          })
-        }
-        server.builder.distFolder = ''
-        server.builder.cwd = ''
-      })()
-  })
-  const sequential = require('promise-sequential')
-  await sequential(promises)
+  await server.loadModules()
+  listen()
 }
 
 function listen () {
