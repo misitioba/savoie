@@ -1,0 +1,60 @@
+body {
+    margin: 0px;
+    padding: 0px;
+}
+
+select,
+.btn,
+span,
+label,
+a,
+p {
+    font-family: GT Eesti Display, "Helvetica Neue", Helvetica, sans-serif;
+}
+
+.btn {
+    cursor: pointer;
+    font-size: 14px;
+    max-width: 200px;
+    min-height: max-content;
+    background-color: #B5A075;
+    color: white;
+    font-weight: bold;
+    border: 0px;
+    border-radius: 5px;
+    padding: 10px;
+    text-decoration: none;
+    display: inline-block;
+    width: max-content;
+}
+
+.select {
+    background-color: #B5A075;
+}
+
+.btn-danger {
+    background-color: #ff00007d;
+}
+
+.btn.btn-danger:hover {
+    background-color: #ff00009c;
+}
+
+.btn-black {
+    background-color: #916f6f;
+}
+
+.btn.btn-black:hover {
+    background-color: #4f3b3b;
+}
+
+.btn:hover {
+    background-color: #9D8A61;
+}
+
+.app_content {
+    min-height: calc(100vh - 200px);
+    max-width: 1200px;
+    padding: 20px;
+    margin: 0 auto;
+}

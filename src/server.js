@@ -37,8 +37,6 @@ server.use((req, res, next) => {
 
 server.use('/', express.static('dist'))
 server.use('/static', express.static('src/static'))
-server.use('/admin_pages', express.static('src/app/pages'))
-server.use('/styles', express.static('src/app/styles'))
 server.use('/api', require('./express/api'))
 
 /*
@@ -48,9 +46,15 @@ server.use('/api', require('./express/api'))
   }
   */
 
+// asyncInit().then(listen)
 asyncInit()
 
 async function asyncInit () {
+  if (process.env.NODE_ENV === 'production') {
+    let distFolder = require('path').join(process.cwd(), 'dist') + '/index.html'
+    await rimraf(distFolder)
+  }
+
   server.builder = require('../lib/builder')
   server.configureFunql()
   await server.generateRestClient()
@@ -58,8 +62,35 @@ async function asyncInit () {
   listen()
 }
 
+function rimraf (glob) {
+  var debug = require('debug')(`app:rimraf ${`${Date.now()}`.white}`)
+  debug(glob)
+  return new Promise((resolve, reject) => {
+    require('rimraf')(glob, err => {
+      if (err) reject(err)
+      else resolve()
+    })
+  })
+}
+
 function listen () {
-  var PORT = process.env.PORT || 3000
   var debug = require('debug')(`app:server ${`${Date.now()}`.white}`)
+  var PORT = process.env.PORT || 3000
+  // debug('LISTEN')
   server.listen(PORT, () => debug(`Listening at ${PORT}`))
 }
+
+process.on('SIGINT', () => {
+  server.close()
+  console.log('Bye bye!')
+  process.exit()
+})
+
+process
+
+  // Handle normal exits
+  .on('exit', code => {
+    server.close()
+    console.log('Bye bye 2!')
+    process.exit(0)
+  })

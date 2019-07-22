@@ -15,8 +15,9 @@ module.exports = app => {
       app.builder.cwd = module.basePath
       module.getPath = p => require('path').join(requirePath, p)
       module.getRouteName = p => require('path').join('/' + module.name, p)
+      // debug(`${module.title} loading... ${name}`)
       await require(requirePath)(app, module)
-      debug(`${module.title} loaded as ${name}`)
+      // debug(`${module.title} loaded as ${name}`)
     } catch (err) {
       debug(`${module.title} load error`, {
         err: err.stack
