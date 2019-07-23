@@ -13,8 +13,14 @@ module.exports = app => {
       module.basePath = requirePath
       app.builder.distFolder = `dist/${name}`
       app.builder.cwd = module.basePath
-      module.getPath = p => require('path').join(requirePath, p)
-      module.getRouteName = p => require('path').join('/' + module.name, p)
+      module.getPath = p => {
+        if (!p) return requirePath
+        else return require('path').join(requirePath, p)
+      }
+      module.getRouteName = p => {
+        if (!p) return `/` + module.name
+        return require('path').join('/' + module.name, p)
+      }
       // debug(`${module.title} loading... ${name}`)
       await require(requirePath)(app, module)
       // debug(`${module.title} loaded as ${name}`)

@@ -17,7 +17,8 @@
         "express": "^4.17.1",
         "express-mysql-session": "^2.1.0",
         "express-session": "^1.16.2",
-        "lodash": "^4.17.13",
+        "fingerprintjs2": "^2.1.0",
+        "lodash": "^4.17.15",
         "mailgun-js": "^0.22.0",
         "moment": "^2.24.0",
         "mysql2": "^1.6.5",
@@ -25,6 +26,7 @@
         "nodemon": "^1.19.1",
         "promise-sequential": "^1.1.1",
         "pug": "^2.0.4",
+        "puppeteer": "^1.18.1",
         "rimraf": "^2.6.3",
         "sander": "^0.6.0",
         "style-loader": "^0.23.1",
@@ -32,7 +34,7 @@
         "webpack": "^4.36.1"
     },
     "scripts": {
-        "dev": "nodemon src/server.js -e js,css,scss,html,pug --watch src/app --watch src/server.js --watch src/express --watch lib --watch apps --ignore apps/*/static --ignore **/tmp --ignore apps/**/js",
+        "dev": "nodemon src/server.js -e js,css,scss,html,pug --watch src --watch lib --watch apps --ignore 'apps/*/js/**' --ignore 'apps/*/tmp/**' --ignore 'apps/*/pages/**' --ignore 'apps/*/partials/**' --ignore 'apps/*/static/**'",
         "start": "rm -rf node_modules && ln -s /tmp/node_modules node_modules && node ./src/server.js"
     }
 }

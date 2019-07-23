@@ -1,18 +1,17 @@
 function clousureEval(_evalCode, _scope) {
-  with (_scope) {
-    // prints "foo" if _scope.b=foo //console.log(eval('b'))
-    // prints foo if _scope.b=foo //console.log(eval('this.b'))
-    return function () {
-      eval(_evalCode)
-    }.call(_scope)
-  }
+    with(_scope) {
+        // prints "foo" if _scope.b=foo //console.log(eval('b'))
+        // prints foo if _scope.b=foo //console.log(eval('this.b'))
+        return function() {
+            eval(_evalCode)
+        }.call(_scope)
+    }
 }
 
 module.exports = app => {
-  var debug = require('debug')(`app:express:funql ${`${Date.now()}`.white}`)
+        var debug = require('debug')(`app:express:funql ${`${Date.now()}`.white}`)
   return function configureFunql() {
     app.get('/funql', async function configureFunqlRoute(req, res) {
-
       res.header('Access-Control-Allow-Origin', req.headers.origin)
       res.header(
         'Access-Control-Allow-Headers',
@@ -28,24 +27,30 @@ module.exports = app => {
 
     app.post('/funql', async function configureFunqlRoute(req, res) {
       let data = req.body
-      await executeFunql(data, res)
+      await executeFunql(data, req, res)
     })
   }
 
-  async function executeFunql(data, res) {
+  async function executeFunql(data, req, res) {
     let name = data.name
+    let functionScope = {
+      req,
+      res,
+      name,
+    }
+    app.api = app.api || {}
     if (!app.api[name]) {
       res.json({
         err: 'INVALID_NAME',
       })
     } else {
       try {
-        let result = await app.api[name].apply(app.api, data.args || [])
+        let result = await app.api[name].apply(functionScope, data.args || [])
         if (data.transform && typeof data.transform === 'string') {
           var transformHandler = (result, options = {}) => {
             var moment = require('moment')
             var __handler = {}
-            clousureEval(`__handler.fn = ${data.transform};`, {
+            clousureEval(`__handler.fn = ${data.transform}`, {
               __handler,
               moment: require('moment'),
             })

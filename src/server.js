@@ -35,18 +35,6 @@ server.use((req, res, next) => {
   next()
 })
 
-server.use('/', express.static('dist'))
-server.use('/static', express.static('src/static'))
-server.use('/api', require('./express/api'))
-
-/*
-//generateProject().then(
-  function generateProject () {
-    return require('./app/generator')(server) // promise
-  }
-  */
-
-// asyncInit().then(listen)
 asyncInit()
 
 async function asyncInit () {
@@ -55,10 +43,30 @@ async function asyncInit () {
     await rimraf(distFolder)
   }
 
+  server.loadApiFunctions({
+    path: require('path').join(process.cwd(), 'src/express/funql_api'),
+    scope: {
+      // dbName: config.db_name
+    }
+  })
+
+  server.get(
+    '/analytics.js',
+    server.webpackMiddleware({
+      entry: require('path').join(process.cwd(), 'src/js/analytics.js'),
+      output: require('path').join(process.cwd(), 'tmp/analytic.js')
+    })
+  )
+
   server.builder = require('../lib/builder')
   server.configureFunql()
   await server.generateRestClient()
   await server.loadModules()
+
+  server.use('/', express.static('dist'))
+  server.use('/static', express.static('src/static'))
+  server.use('/api', require('./express/rest_api'))
+
   listen()
 }
 
@@ -78,11 +86,11 @@ function listen () {
   var PORT = process.env.PORT || 3000
   // debug('LISTEN')
   server.listen(PORT, () => debug(`Listening at ${PORT}`))
+  server.timeout = 1000 * 60 * 10
 }
 
 process.on('SIGINT', () => {
-  server.close()
-  console.log('Bye bye!')
+  console.log('Bye bye 1!')
   process.exit()
 })
 
@@ -90,7 +98,6 @@ process
 
   // Handle normal exits
   .on('exit', code => {
-    server.close()
     console.log('Bye bye 2!')
     process.exit(0)
   })
