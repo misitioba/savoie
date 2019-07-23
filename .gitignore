@@ -4,3 +4,4 @@ dist
 apps/**
 !apps/readme.md
 *.log
+tmp
