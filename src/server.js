@@ -58,6 +58,14 @@ async function asyncInit () {
     })
   )
 
+  server.get(
+    '/commonHeader.js',
+    server.webpackMiddleware({
+      entry: require('path').join(process.cwd(), 'src/js/commonHeader.js'),
+      output: require('path').join(process.cwd(), 'tmp/sharedHeaderApp.js')
+    })
+  )
+
   server.builder = require('../lib/builder')
   server.configureFunql()
   await server.generateRestClient()
