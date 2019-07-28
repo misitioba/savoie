@@ -1,34 +1,39 @@
 module.exports = app => {
     return async function generateRestClient(options) {
-        var sander = require('sander');
+        var sander = require('sander')
         var path = require('path')
 
-
         var methods = [{
-            name: 'getLoggedUser',
-            handler: function() {
-                return axios.get('/api/auth/loggedUser');
+                name: 'getLoggedUser',
+                handler: function() {
+                    return axios.get('/api/auth/loggedUser')
+                }
+            },
+            {
+                name: 'loginWithEmailAndPassword',
+                handler: function(p) {
+                    return axios.post('/api/auth', p)
+                }
+            },
+            {
+                name: 'logout',
+                handler: function() {
+                    return axios.get('/api/auth/logout')
+                }
+            },
+            {
+                name: 'funql',
+                handler: function(p = {}) {
+                    if (p.transform) p.transform = p.transform.toString()
+                    return axios.post(`${window.api.funqlEndpointURL}funql`, p)
+                }
             }
-        }, {
-            name: 'loginWithEmailAndPassword',
-            handler: function(p) {
-                return axios.post('/api/auth', p);
-            }
-        }, {
-            name: 'logout',
-            handler: function() {
-                return axios.get('/api/auth/logout');
-            }
-        }, {
-            name: 'funql',
-            handler: function(p = {}) {
-                if (p.transform) p.transform = p.transform.toString()
-                return axios.post('/funql', p);
-            }
-        }]
+        ]
 
         let bundle = `
-            window.api = {}
+            window.api = {
+                funqlEndpointURL: '/'
+            }
         `
         methods.forEach(m => {
             bundle += `api.${m.name} = function(p){
@@ -39,7 +44,7 @@ module.exports = app => {
                       if(!r)  reject(new Error('empty response'));
                       if(r && r.err) onError(r.err)
                       if(r && !r.err) {
-                          console.info('api ${m.name}',r)
+                          console.info('api ${m.name}',(p||{}).name,r)
                           if(r.result) resolve(r.result)
                           else resolve(r)
                       }
@@ -52,7 +57,6 @@ module.exports = app => {
             };
             `
         })
-
 
         sander.writeFile(path.join(process.cwd(), `dist/api.js`), bundle)
     }
