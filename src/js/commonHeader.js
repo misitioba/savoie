@@ -1,6 +1,6 @@
 import './components/commonHeaderInternal'
 import './components/commonLogin'
-import './components/commonFooter'
+
 
 new Vue({
     el: '.appTop',
