@@ -1,6 +1,10 @@
-Vue.component('shared-header', {
+import stylesMixin from '../mixins/stylesMixin'
+Vue.component('common-header', {
+    mixins: [stylesMixin],
+    props: ['logo'],
     template: `
-        <div class="shared_header" ref="root">
+<div ref="scope">
+        <div class="common_header" ref="root">
             <div class="right">
                 <div class="toolbar" @click="toggleToolbar">
                     <div class="user_icon">
@@ -18,6 +22,13 @@ Vue.component('shared-header', {
                 </div>
             </div>
             
+        </div>
+
+        <div class="logoWrapper" v-show="!isLogged&&!!logo">
+        <img class="logo" :src="logo" v-show="!isLogged&&!!logo" ref="logo"/>
+        </div>
+        <common-footer v-show="!isLogged"></common-footer>
+
         </div>
     `,
     destroyed() {
@@ -62,10 +73,9 @@ Vue.component('shared-header', {
         }
     },
     async mounted() {
-        let styles = document.createElement('style')
-        styles.setAttribute('scoped', '')
-        styles.innerHTML = this.styles
-        this.$refs.root.appendChild(styles)
+        setTimeout(() => {
+            this.$refs.logo.style.display = 'block'
+        }, 1000)
         try {
             this.user = await api.getLoggedUser()
             this.isLogged = !!this.user
@@ -87,34 +97,42 @@ Vue.component('shared-header', {
             isLogged: false,
             toolbarCollapsed: false,
             styles: `
-                .shared_header{
-                    background-color: #975d50;
+            .logoWrapper{
+                height: calc(100vh - 100px);
+            }
+                .logo{
+                    width: 100%;
+                    height: calc(100vh - 100px);
+                    display:none;
+                }
+                .common_header{
+                    background-color: transparent;
                     min-height: 100px;
                     display:flex;
                     justify-content: flex-end;
                 }
-                .shared_header h1{
+                .common_header h1{
                     font-size: 8px;
                 }
-                .shared_header .right{
+                .common_header .right{
                     display: flex;
                     align-self: center;
                     justify-self: center;
                 }
-                .shared_header .toolbar:hover{
-                    background: #dfd9d8;
+                .common_header .toolbar:hover{
+                    background: #d9c3c0;
                 }
-                .shared_header .toolbar{
+                .common_header .toolbar{
                     display: grid;
                     grid-template-columns: 1fr 50% 1fr;
                     grid-template-areas: 'el el el';
                     align-self: center;
                     justify-self: flex-end;
-                    background: #f8e8e8;
+                    background: #e4dccc;
                     padding: 15px;
 border-radius: 5px 0px 0px 0px;
                 }
-                .shared_header .toolbar_menu{
+                .common_header .toolbar_menu{
                     position: absolute;
                     height: -moz-max-content;
                     width: -moz-available;
@@ -122,7 +140,7 @@ border-radius: 5px 0px 0px 0px;
 background: #f8e8e8;
 padding: 0px 0px;
                 }
-                .shared_header .toolbar_menu a{
+                .common_header .toolbar_menu a{
                     color:black;
                     font-size: 12px;
                     text-decoration:none;
@@ -130,18 +148,18 @@ padding: 0px 0px;
                     display: block;
                     
                 }
-                .shared_header .toolbar_menu a:hover{
+                .common_header .toolbar_menu a:hover{
                     background-color:#dfd9d8;
                 }
-                .shared_header .toolbar:hover{
+                .common_header .toolbar:hover{
                     cursor:pointer;
                 }
-                .shared_header .user_icon, .icon{
+                .common_header .user_icon, .icon{
                     display:flex;
                     justify-content:center;
                     align-items:center;
                 }
-                .shared_header .text{
+                .common_header .text{
                     font-size: 12px;
                     white-space: nowrap;
                     min-width: 115px;

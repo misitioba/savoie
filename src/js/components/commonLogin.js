@@ -1,4 +1,4 @@
-Vue.component('shared-login', {
+Vue.component('common-login', {
     props: ['logo'],
     template: `
         <div class="login_form" ref="root"" @keyup.esc="$emit('close')" tabindex="0">
@@ -49,7 +49,7 @@ Vue.component('shared-login', {
                    height: calc(100vh);
                    background-color:rgba(255, 255, 255, 0.5);
                }
-               input{
+               .login_form input{
                     border:0px;
                     margin-top: 5px;
                     margin-bottom: 15px;
