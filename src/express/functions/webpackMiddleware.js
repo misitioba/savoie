@@ -27,7 +27,7 @@ module.exports = app => {
           output,
           module: getModuleSection()
         },
-        (err, stats) => {
+        async (err, stats) => {
           // Stats Object
           if (err || (stats && stats.hasErrors())) {
             // Handle errors here
@@ -58,7 +58,19 @@ module.exports = app => {
             res.status(500).send()
           } else {
             // Done processing
-            res.sendFile(options.output)
+            let html = (await require('sander').readFile(
+              options.output
+            )).toString('utf-8')
+            if (options.transform) {
+              html = options.transform(html, req)
+              if (html instanceof Promise) {
+                html = await html
+              }
+            }
+            // res.set('Content-Type', 'text/javascript')
+            res.header('Content-Type', 'text/javascript')
+            res.send(html)
+            // res.sendFile(options.output)
             if (process.env.NODE_ENV === 'production') {
               cache[options.entry + '_' + options.output] = true
             }
