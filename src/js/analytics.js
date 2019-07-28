@@ -35,3 +35,5 @@ window.murlytics = {
         })
     }
 }
+
+export default murlytics
