@@ -4,35 +4,66 @@ module.exports = app => {
         var path = require('path')
 
         var methods = [{
-                name: 'getLoggedUser',
-                handler: function() {
-                    return axios.get('/api/auth/loggedUser')
+            name: 'getLoggedUser',
+            handler: function () {
+                return axios.get('/api/auth/loggedUser')
+            }
+        },
+        {
+            name: 'loginWithEmailAndPassword',
+            handler: function (p) {
+                return axios.post('/api/auth', p)
+            }
+        },
+        {
+            name: 'logout',
+            handler: function () {
+                return axios.get('/api/auth/logout')
+            }
+        },
+        {
+            name: 'funql',
+            handler: function (p = {}) {
+
+                if (window._funqlGetMode) {
+                    return window.api.funqlGet(`${window.api.funqlEndpointURL}funql`, p)
                 }
-            },
-            {
-                name: 'loginWithEmailAndPassword',
-                handler: function(p) {
-                    return axios.post('/api/auth', p)
+
+                if (p.transform) p.transform = p.transform.toString()
+                return axios.post(`${window.api.funqlEndpointURL}funql`, p)
+            }
+        }
+        ]
+
+        async function funqlGet(uri, p) {
+            if (p.transform) {
+                p.transform = btoa(p.transform.toString())
+                p.transformEncoded = true
+            }
+            let body = btoa(JSON.stringify(p))
+            try {
+                let res = await fetch(uri + `?body=${body}`)
+                try {
+                    res = await res.json()
+                } catch (err) {
+                    if (err.stack.indexOf('Unexpected end of JSON input') !== -1) {
+                        //some calls could return nothing
+                        return {}
+                    }
+                    throw err
                 }
-            },
-            {
-                name: 'logout',
-                handler: function() {
-                    return axios.get('/api/auth/logout')
-                }
-            },
-            {
-                name: 'funql',
-                handler: function(p = {}) {
-                    if (p.transform) p.transform = p.transform.toString()
-                    return axios.post(`${window.api.funqlEndpointURL}funql`, p)
+                return res
+            } catch (err) {
+                return {
+                    err: err.stack || err || 'SERVER_ERROR'
                 }
             }
-        ]
+        }
 
         let bundle = `
             window.api = {
-                funqlEndpointURL: '/'
+                funqlEndpointURL: '/',
+                funqlGet:${funqlGet}
             }
         `
         methods.forEach(m => {

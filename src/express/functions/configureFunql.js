@@ -1,15 +1,15 @@
 function clousureEval(_evalCode, _scope) {
-    with(_scope) {
-        // prints "foo" if _scope.b=foo //console.log(eval('b'))
-        // prints foo if _scope.b=foo //console.log(eval('this.b'))
-        return function() {
-            eval(_evalCode)
-        }.call(_scope)
-    }
+  with (_scope) {
+    // prints "foo" if _scope.b=foo //console.log(eval('b'))
+    // prints foo if _scope.b=foo //console.log(eval('this.b'))
+    return function () {
+      eval(_evalCode)
+    }.call(_scope)
+  }
 }
 
 module.exports = app => {
-        var debug = require('debug')(`app:express:funql ${`${Date.now()}`.white}`)
+  var debug = require('debug')(`app:express:funql ${`${Date.now()}`.white}`)
   return function configureFunql() {
     app.get('/funql', async function configureFunqlRoute(req, res) {
       res.header('Access-Control-Allow-Origin', req.headers.origin)
@@ -22,10 +22,11 @@ module.exports = app => {
       if (data.transformEncoded) {
         data.transform = require('atob')(data.transform)
       }
-      await executeFunql(data, res)
+      await executeFunql(data, req, res)
     })
 
-    app.post('/funql', async function configureFunqlRoute(req, res) {
+    app.post('/funql', require('cors')(), async function configureFunqlRoute(req, res) {
+
       let data = req.body
       await executeFunql(data, req, res)
     })
