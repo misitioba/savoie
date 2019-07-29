@@ -29,18 +29,26 @@ function createLoadFunctions (app) {
           handler: mod.handler ? mod.handler : mod
         }
       })
+      .filter(fn => {
+        if (typeof fn.handler !== 'function') {
+          debug('Function file', fn.name, 'INVALID. Skipping...')
+        }
+        return typeof fn.handler === 'function'
+      })
       .forEach(fn => {
         let impl = fn.handler(app)
         if (impl instanceof Promise) {
-          impl.then(handler => onReady(app, fn, handler)).catch(onError)
+          impl
+            .then(handler => onReady(app, fn, handler, options))
+            .catch(onError)
         } else {
-          onReady(app, fn, impl)
+          onReady(app, fn, impl, options)
         }
       })
   }
 }
 
-function onReady (app, fn, impl) {
+function onReady (app, fn, impl, options = {}) {
   if (typeof app[fn.name] !== 'undefined') {
     debug('Function file', fn.name, 'exists. Skipping...')
   } else {
@@ -48,7 +56,8 @@ function onReady (app, fn, impl) {
     app.functions.push(fn.name)
     // debug('Function file', fn.name, 'loaded')
     app[fn.name] = function () {
-      let r = impl.apply(this, arguments)
+      var mergedScope = Object.assign({}, this, options.scope || {})
+      let r = impl.apply(mergedScope, arguments)
       if (r instanceof Promise) {
         return new Promise(async (resolve, reject) => {
           try {
