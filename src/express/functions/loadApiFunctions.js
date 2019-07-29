@@ -50,7 +50,8 @@ function onReady (app, fn, impl, options = {}) {
   } else {
     // debug('API Function file', fn.name, 'loaded')
     app.api[fn.name] = function () {
-      let r = impl.apply(options.scope || {}, arguments)
+      var mergedScope = Object.assign({}, this, options.scope || {})
+      let r = impl.apply(mergedScope || {}, arguments)
       if (r instanceof Promise) {
         return new Promise(async (resolve, reject) => {
           try {
