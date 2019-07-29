@@ -41,7 +41,10 @@ module.exports = app => {
                     var handler = ${m.handler}
                     console.log('api ${m.name}', p||'(no params)')
                     handler(p).then(r=>{
-                      if(!r)  reject(new Error('empty response'));
+                      if(!r)  {
+                          r = {} //empty response equal to empty object
+                            //reject(new Error('empty response'));
+                      }
                       if(r && r.err) onError(r.err)
                       if(r && !r.err) {
                           console.info('api ${m.name}',(p||{}).name,r)
