@@ -27,7 +27,7 @@ Vue.component('common-header', {
         <div class="logoWrapper" v-show="!isLogged&&!!logo">
         <img class="logo" :src="logo" v-show="!isLogged&&!!logo" ref="logo"/>
         </div>
-        <common-footer v-show="!isLogged"></common-footer>
+        
 
         </div>
     `,
