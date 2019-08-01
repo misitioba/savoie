@@ -32,6 +32,15 @@ p {
     background-color: #B5A075;
 }
 
+.btn-tiny {}
+
+.btn-small {
+    width: max-content !important;
+    font-size: 12px;
+}
+
+.btn-large {}
+
 .btn-danger {
     background-color: #ff00007d;
 }
