@@ -11,6 +11,7 @@ module.exports = app => {
         return !!(rows && rows.length > 0)
       }
       return rows
+      conn.close()
     } catch (err) {
       debug(
         `error on query`.red,
