@@ -1,15 +1,15 @@
 function clousureEval(_evalCode, _scope) {
-  with (_scope) {
-    // prints "foo" if _scope.b=foo //console.log(eval('b'))
-    // prints foo if _scope.b=foo //console.log(eval('this.b'))
-    return function () {
-      eval(_evalCode)
-    }.call(_scope)
-  }
+    with(_scope) {
+        // prints "foo" if _scope.b=foo //console.log(eval('b'))
+        // prints foo if _scope.b=foo //console.log(eval('this.b'))
+        return function() {
+            eval(_evalCode)
+        }.call(_scope)
+    }
 }
 
 module.exports = app => {
-  var debug = require('debug')(`app:express:funql ${`${Date.now()}`.white}`)
+        var debug = require('debug')(`app:express:funql ${`${Date.now()}`.white}`)
   return function configureFunql() {
     app.get('/funql', async function configureFunqlRoute(req, res) {
       res.header('Access-Control-Allow-Origin', req.headers.origin)
@@ -25,11 +25,45 @@ module.exports = app => {
       await executeFunql(data, req, res)
     })
 
-    app.post('/funql', require('cors')(), async function configureFunqlRoute(req, res) {
+    app.post(
+      '/funql',
+      app.authenticateUser(),
+      require('cors')(),
+      async function configureFunqlRoute(req, res) {
+        if (req.query.multiparty === '1') {
+          var multiparty = require('multiparty')
+          var form = new multiparty.Form()
+          var util = require('util')
+          form.parse(req, async function(err, fields, files) {
+            //console.log('MULTIPART!!')
+            console.log('TRACE', util.inspect({ fields: fields, files: files }))
+            let data = {
+              name: fields._funqlName,
+            }
+            if (fields._funqlTransform) {
+              data.transform = fields._funqlTransform
+            }
+            let arg = {}
+            Object.keys(fields)
+              .filter(k => k.indexOf('_') !== 0)
+              .forEach(k => {
+                arg[k] = fields[k][0]
+              })
 
-      let data = req.body
-      await executeFunql(data, req, res)
-    })
+            let filesArg = {}
+            Object.keys(files).forEach(k => {
+              filesArg[k] = files[k][0]
+            })
+
+            data.args = [arg, filesArg]
+            await executeFunql(data, req, res)
+          })
+        } else {
+          let data = req.body
+          await executeFunql(data, req, res)
+        }
+      }
+    )
   }
 
   async function executeFunql(data, req, res) {

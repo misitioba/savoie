@@ -1,6 +1,14 @@
 const scopeCss = require('scope-css')
 var uniqid = require('uniqid')
 
+export function template(template) {
+    return `
+    <div ref="scope">
+        ${template}
+    </div>
+    `
+}
+
 export default {
     mounted() {
         if (!this.$refs.root) {

@@ -4,35 +4,68 @@ module.exports = app => {
         var path = require('path')
 
         var methods = [{
-            name: 'getLoggedUser',
-            handler: function () {
-                return axios.get('/api/auth/loggedUser')
-            }
-        },
-        {
-            name: 'loginWithEmailAndPassword',
-            handler: function (p) {
-                return axios.post('/api/auth', p)
-            }
-        },
-        {
-            name: 'logout',
-            handler: function () {
-                return axios.get('/api/auth/logout')
-            }
-        },
-        {
-            name: 'funql',
-            handler: function (p = {}) {
-
-                if (window._funqlGetMode) {
-                    return window.api.funqlGet(`${window.api.funqlEndpointURL}funql`, p)
+                name: 'getLoggedUser',
+                handler: function() {
+                    return axios.get('/api/auth/loggedUser')
                 }
+            },
+            {
+                name: 'loginWithEmailAndPassword',
+                handler: function(p) {
+                    return axios.post('/api/auth', p)
+                }
+            },
+            {
+                name: 'logout',
+                handler: function() {
+                    return axios.get('/api/auth/logout')
+                }
+            },
+            {
+                name: 'funql',
+                handler: async function(p = {}) {
+                    if (window._funqlGetMode) {
+                        return window.api.funqlGet(`${window.api.funqlEndpointURL}funql`, p)
+                    }
 
-                if (p.transform) p.transform = p.transform.toString()
-                return axios.post(`${window.api.funqlEndpointURL}funql`, p)
+                    if (!(p.args instanceof Array)) {
+                        p.args = [p.args]
+                    }
+
+                    if (p.transform) p.transform = p.transform.toString()
+
+                    let query = ''
+
+                    if (p.multipart) {
+                        var formData = new FormData()
+                        Object.keys(p.multipart).forEach(key => {
+                            formData.append(key, p.multipart[key])
+                        })
+                        p.args.forEach(arg => {
+                            if (typeof arg === 'object' && !(arg instanceof Array)) {
+                                Object.keys(arg).forEach(key => {
+                                    formData.append(key, arg[key])
+                                })
+                            }
+                        })
+                        formData.append('_funqlName', p.name)
+                        if (p.transform) {
+                            formData.append('_funqlTransform', p.transform)
+                        }
+                        p = formData
+                        query = `multiparty=1`
+                        let r = await fetch(
+                            `${window.api.funqlEndpointURL}funql?${query}`, {
+                                method: 'POST',
+                                body: formData
+                            }
+                        )
+                        return r.json()
+                    }
+
+                    return axios.post(`${window.api.funqlEndpointURL}funql?${query}`, p)
+                }
             }
-        }
         ]
 
         async function funqlGet(uri, p) {
@@ -47,7 +80,7 @@ module.exports = app => {
                     res = await res.json()
                 } catch (err) {
                     if (err.stack.indexOf('Unexpected end of JSON input') !== -1) {
-                        //some calls could return nothing
+                        // some calls could return nothing
                         return {}
                     }
                     throw err

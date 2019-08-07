@@ -66,6 +66,14 @@ async function asyncInit () {
     })
   )
 
+  server.get(
+    '/feedbackButton.js',
+    server.webpackMiddleware({
+      entry: require('path').join(process.cwd(), 'src/js/feedbackButton.js'),
+      output: require('path').join(process.cwd(), 'tmp/feedbackButton.js')
+    })
+  )
+
   server.builder = require('../lib/builder')
   server.configureFunql()
   await server.generateRestClient()
