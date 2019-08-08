@@ -72,6 +72,7 @@ module.exports = app => {
       req,
       res,
       name,
+      user: req.user,
     }
     app.api = app.api || {}
     if (!app.api[name]) {
