@@ -2,8 +2,8 @@ var debug = require('debug')(`app:webpackMiddleware ${`${Date.now()}`.white}`)
 
 module.exports = app => {
   let cache = {}
-  return function webpackMiddleware (options = {}) {
-    return function webpackMiddlewareInstance (req, res) {
+  return function webpackMiddleware(options = {}) {
+    return function webpackMiddlewareInstance(req, res) {
       if (
         process.env.NODE_ENV === 'production' &&
         !!cache[options.entry + '_' + options.output]
@@ -71,7 +71,7 @@ module.exports = app => {
             res.header('Content-Type', 'text/javascript')
             res.send(html)
             // res.sendFile(options.output)
-            if (process.env.NODE_ENV === 'production') {
+            if (process.env.NODE_ENV === 'production' && !options.transform) {
               cache[options.entry + '_' + options.output] = true
             }
           }
@@ -81,7 +81,7 @@ module.exports = app => {
   }
 }
 
-function getModuleSection () {
+function getModuleSection() {
   return {
     rules: [
       {
