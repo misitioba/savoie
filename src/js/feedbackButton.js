@@ -46,14 +46,16 @@ import html2canvas from 'html2canvas';
                         
                     }
                     .cmp_fb__btn{
-                        z-index:101;
-                        right: 20px;
+             z-index: 101;
+right: 20px;
 bottom: 5px;
 position: fixed;
-background-color: navajowhite;
+background-color: #e4dccc;
 width: 200px;
 height: 30px;
-cursor:poiner;
+cursor: pointer;
+border: 0px;
+color: #2e5b26;
                     }
                     .cmp_fb__btn:hover{
                         background-color:white;

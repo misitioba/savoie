@@ -81,7 +81,7 @@ module.exports = app => {
       })
     } else {
       try {
-        if (data.args.length === 1 && data.args[0] === null) {
+        if (data.args && data.args.length === 1 && data.args[0] === null) {
           data.args = null
         }
         let result = await app.api[name].apply(functionScope, data.args || [])
