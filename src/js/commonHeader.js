@@ -1,7 +1,6 @@
 import './components/commonHeaderInternal'
 import './components/commonLogin'
 
-
 new Vue({
     el: '.appTop',
     name: 'commonHeader',
@@ -32,10 +31,16 @@ new Vue({
             window.user = {
                 id: user.id
             }
+            if (window.onLogin) {
+                window.onLogin()
+            }
         },
         onLogout() {
             window.user = {
                 id: null
+            }
+            if (window.onLogout) {
+                window.onLogout()
             }
         }
     }

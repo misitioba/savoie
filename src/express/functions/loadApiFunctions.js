@@ -44,13 +44,19 @@ module.exports = app => {
 }
 
 function onReady (app, fn, impl, options = {}) {
+  // console.log('TRACE DEF', options)
+
   app.api = app.api || []
   if (typeof app.api[fn.name] !== 'undefined') {
     debug('API Function file', fn.name, 'exists. Skipping...')
   } else {
     // debug('API Function file', fn.name, 'loaded')
     app.api[fn.name] = function () {
-      var mergedScope = Object.assign({}, this, options.scope || {})
+      let optionsScope = {}
+      if (typeof options.scope === 'function') {
+        optionsScope = options.scope(this) || {}
+      }
+      var mergedScope = Object.assign({}, this, optionsScope)
       let r = impl.apply(mergedScope || {}, arguments)
       if (r instanceof Promise) {
         return new Promise(async (resolve, reject) => {

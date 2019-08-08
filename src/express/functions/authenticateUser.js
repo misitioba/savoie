@@ -6,6 +6,15 @@ module.exports = app => {
         req.user = await req.findUser({
           id: req.session.userId
         })
+
+        if (req.user) {
+          let userModules = await app.dbExecute(
+            `SELECT * FROM user_modules WHERE user_id = ?`,
+            [req.user.id]
+          )
+          req.user.modules = userModules
+        }
+
         next()
       } else {
         next()
