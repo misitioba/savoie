@@ -1,15 +1,15 @@
 function clousureEval(_evalCode, _scope) {
-    with(_scope) {
-        // prints "foo" if _scope.b=foo //console.log(eval('b'))
-        // prints foo if _scope.b=foo //console.log(eval('this.b'))
-        return function() {
-            eval(_evalCode)
-        }.call(_scope)
-    }
+  with (_scope) {
+    // prints "foo" if _scope.b=foo //console.log(eval('b'))
+    // prints foo if _scope.b=foo //console.log(eval('this.b'))
+    return function () {
+      eval(_evalCode)
+    }.call(_scope)
+  }
 }
 
 module.exports = app => {
-        var debug = require('debug')(`app:express:funql ${`${Date.now()}`.white}`)
+  var debug = require('debug')(`app:express:funql ${`${Date.now()}`.white}`)
   return function configureFunql() {
     app.get('/funql', async function configureFunqlRoute(req, res) {
       res.header('Access-Control-Allow-Origin', req.headers.origin)
@@ -34,7 +34,7 @@ module.exports = app => {
           var multiparty = require('multiparty')
           var form = new multiparty.Form()
           var util = require('util')
-          form.parse(req, async function(err, fields, files) {
+          form.parse(req, async function (err, fields, files) {
             //console.log('MULTIPART!!')
             console.log('TRACE', util.inspect({ fields: fields, files: files }))
             let data = {
@@ -81,6 +81,9 @@ module.exports = app => {
       })
     } else {
       try {
+        if (data.args.length === 1 && data.args[0] === null) {
+          data.args = null
+        }
         let result = await app.api[name].apply(functionScope, data.args || [])
         if (data.transform && typeof data.transform === 'string') {
           var transformHandler = (result, options = {}) => {
