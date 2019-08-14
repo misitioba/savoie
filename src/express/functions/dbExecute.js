@@ -10,14 +10,15 @@ module.exports = app => {
       if (options.exists) {
         return !!(rows && rows.length > 0)
       }
-      return rows
       conn.close()
+      return rows
     } catch (err) {
       debug(
         `error on query`.red,
         query.yellow,
         process.env.NODE_ENV !== 'production' ? params : '[params hidden]'
       )
+      conn.close()
       throw err
     }
   }
