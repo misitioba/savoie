@@ -34,12 +34,14 @@ module.exports = app => {
   }
 
   return async function loadModules () {
+    debug('loadModules')
     let conn = await app.getMysqlConnection()
 
     let [modules, fields] = await conn.execute(
       `SELECT * FROM modules WHERE enabled = 1`,
       []
     )
+    conn.close()
     let promises = modules.map(module => {
       return () => LoadSingleModule(module)
     })

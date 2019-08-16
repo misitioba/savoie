@@ -1,8 +1,9 @@
 var debug = require('debug')(`app:dbExecute ${`${Date.now()}`.white}`)
 module.exports = app => {
   return async function dbExecute (query, params, options = {}) {
+    let conn = null
     try {
-      let conn = await app.getMysqlConnection(options)
+      conn = await app.getMysqlConnection(options)
       let [rows, fields] = await conn.execute(query, params)
       if (options.single) {
         return (rows && rows.length > 0 && rows[0]) || null
@@ -18,7 +19,9 @@ module.exports = app => {
         query.yellow,
         process.env.NODE_ENV !== 'production' ? params : '[params hidden]'
       )
-      conn.close()
+      try {
+        conn.close()
+      } catch (err) {}
       throw err
     }
   }

@@ -14,6 +14,12 @@ new Vue({
             return this.modal === 'login'
         }
     },
+    async created() {
+        /* let loggedUser = await api.getLoggedUser({})
+            console.log('loggedUser', {
+                loggedUser
+            }) */
+    },
     methods: {
         onUser(user) {
             window.user = user

@@ -35,7 +35,13 @@ server.use((req, res, next) => {
   next()
 })
 
-asyncInit()
+asyncInit().catch(onCriticalError)
+
+function onCriticalError (err) {
+  console.log(err)
+  var debug = require('debug')(`app:server:ERROR ${`${Date.now()}`.white}`)
+  debug(err)
+}
 
 async function asyncInit () {
   if (process.env.NODE_ENV === 'production') {
@@ -74,9 +80,12 @@ async function asyncInit () {
     })
   )
 
+  var debug = require('debug')(`app:server ${`${Date.now()}`.white}`)
+
   server.builder = require('../lib/builder')
   server.configureFunql()
   await server.generateRestClient()
+  debug('loading modules')
   await server.loadModules()
 
   server.use('/', express.static('dist'))
