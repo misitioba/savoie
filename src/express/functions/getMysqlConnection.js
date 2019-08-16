@@ -20,7 +20,9 @@ module.exports = app => {
     }
     let conn = await pools[database].getConnection()
     conn.close = () => {
-      conn.destroy()
+      // conn.destroy()
+
+      conn.release()
     }
     return conn
 
