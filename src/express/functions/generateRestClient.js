@@ -74,6 +74,7 @@ module.exports = app => {
                 p.transformEncoded = true
             }
             let body = btoa(JSON.stringify(p))
+            body = body.split('+').join('PLUS')
             try {
                 let res = await fetch(uri + `?body=${body}`)
                 try {

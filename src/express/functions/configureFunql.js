@@ -17,8 +17,11 @@ module.exports = app => {
         'Access-Control-Allow-Headers',
         'Origin, X-Requested-With, Content-Type, Accept'
       )
-
-      let data = JSON.parse(require('atob')(req.query.body))
+      
+      //console.log('START'+req.query.body+'END')
+      let body = req.query.body
+      body = body.split('PLUS').join('+')
+      let data = JSON.parse(require('atob')(body))
       if (data.transformEncoded) {
         data.transform = require('atob')(data.transform)
       }
