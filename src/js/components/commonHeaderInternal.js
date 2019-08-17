@@ -1,4 +1,5 @@
 import stylesMixin from '../mixins/stylesMixin'
+
 Vue.component('common-header', {
     mixins: [stylesMixin],
     props: ['logo'],
@@ -17,9 +18,14 @@ Vue.component('common-header', {
                         <i class="fas fa-angle-down"></i>
                     </div>
                 </div>
+                
+
                 <div class="toolbar_menu" v-show="toolbarCollapsed">
+                    <a href="#" @click="currentModal='profileDetails'">Profile</a>
                     <a href="#" @click="logout">Déconnecter</a>
                 </div>
+
+
             </div>
             
         </div>
@@ -27,7 +33,10 @@ Vue.component('common-header', {
         <div class="logoWrapper" v-show="!isLogged&&!!logo">
         <img class="logo" :src="logo" v-show="!isLogged&&!!logo" ref="logo"/>
         </div>
-        
+    
+        <profile-details v-show="currentModal==='profileDetails'" 
+        @pwdchange="logout"
+        @close="currentModal=''"></profile-details>
 
         </div>
     `,
@@ -96,6 +105,7 @@ Vue.component('common-header', {
             user: {},
             isLogged: false,
             toolbarCollapsed: false,
+            currentModal: '',
             styles: `
             .logoWrapper{
                 height: calc(100vh - 100px);

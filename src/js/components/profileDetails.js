@@ -1,21 +1,33 @@
-Vue.component('common-login', {
-    props: ['logo'],
+Vue.component('profile-details', {
+    props: [],
     template: `
-        <div class="login_form" ref="root"" @keyup.esc="$emit('close')" tabindex="0">
+        <div class="profile_details" ref="root"" @keyup.esc="$emit('close')" tabindex="0">
             <div class="overlay">
                 <div class="form">
-                    <img v-show="!!logo" :src="logo" />
-                    <label>Email</label>
-                    <input v-model="form.email" />
-                    <label>Mot de passe</label>
+                    <label>Mot de passe </label>
+                    <p class="pdf__quote">(Changement de mot de passe)</p>
                     <input v-model="form.password" type="password" />
-                    <button class="btn" @click="loginWithEmailAndPassword">Login</button>
+                    <button class="btn" @click="saveChanges">Save changes</button>
                 </div>
 
             </div>
         </div>
     `,
     methods: {
+        async saveChanges() {
+            if (this.form.password) {
+                await api.funql({
+                    name: 'changeUserPassword',
+                    args: [{
+                        newPassword: this.form.password
+                    }]
+                })
+                this.$emit('close')
+                this.$emit('pwdchange')
+            } else {
+                this.$emit('close')
+            }
+        },
         async loginWithEmailAndPassword() {
             try {
                 let user = await api.loginWithEmailAndPassword(
@@ -42,6 +54,12 @@ Vue.component('common-login', {
                 password: ''
             },
             styles: `
+            .pdf__quote{
+                margin-bottom: 0px;
+                margin-top: 5px;
+                font-size: 12px;
+                color: darkgray;
+            }
                .overlay{
                    position:fixed;
                    top:0px;
@@ -49,7 +67,7 @@ Vue.component('common-login', {
                    height: calc(100vh);
                    background-color:rgba(255, 255, 255, 0.5);
                }
-               .login_form input{
+               .profile_details input{
                     border:0px;
                     margin-top: 5px;
                     margin-bottom: 15px;
@@ -61,10 +79,10 @@ Vue.component('common-login', {
                label:{
 
                }
-               .login_form img{
+               .profile_details img{
                     max-height: 140px;
                }
-               .login_form .form{
+               .profile_details .form{
                 display: flex;
                 flex-direction: column;
                 max-width: 300px;
@@ -75,7 +93,7 @@ Vue.component('common-login', {
                 padding: 15px 20px 70px 20px;
                 border-radius: 5px;
                }
-               .login_form button{
+               .profile_details button{
                 margin-top: 30px;
 
                 display: block;

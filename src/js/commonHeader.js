@@ -1,6 +1,6 @@
 import './components/commonHeaderInternal'
 import './components/commonLogin'
-
+import './components/profileDetails'
 new Vue({
     el: '.appTop',
     name: 'commonHeader',
@@ -16,9 +16,9 @@ new Vue({
     },
     async created() {
         /* let loggedUser = await api.getLoggedUser({})
-            console.log('loggedUser', {
-                loggedUser
-            }) */
+                console.log('loggedUser', {
+                    loggedUser
+                }) */
     },
     methods: {
         onUser(user) {
