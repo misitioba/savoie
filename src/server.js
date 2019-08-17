@@ -114,6 +114,7 @@ function listen () {
   server.timeout = 1000 * 60 * 10
 }
 
+/*
 process.on('SIGINT', () => {
   console.log('Bye bye 1!')
   process.exit()
@@ -126,3 +127,5 @@ process
     console.log('Bye bye 2!')
     process.exit(0)
   })
+
+  */
