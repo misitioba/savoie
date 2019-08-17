@@ -11,7 +11,7 @@ module.exports = app => {
       if (options.exists) {
         return !!(rows && rows.length > 0)
       }
-      conn.close()
+      conn.release()
       return rows
     } catch (err) {
       debug(
@@ -20,7 +20,7 @@ module.exports = app => {
         process.env.NODE_ENV !== 'production' ? params : '[params hidden]'
       )
       try {
-        conn.close()
+        conn.release()
       } catch (err) {}
       throw err
     }

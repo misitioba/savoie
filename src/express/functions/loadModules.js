@@ -41,7 +41,7 @@ module.exports = app => {
       `SELECT * FROM modules WHERE enabled = 1`,
       []
     )
-    conn.close()
+    conn.release()
     let promises = modules.map(module => {
       return () => LoadSingleModule(module)
     })

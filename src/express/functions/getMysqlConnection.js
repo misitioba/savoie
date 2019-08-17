@@ -14,20 +14,17 @@ module.exports = app => {
       password: process.env.MYSQL_PWD,
       database
     }
-
     if (!pools[database]) {
       pools[database] = mysql.createPool(credentials)
     }
-    let conn = await pools[database].getConnection()
-    conn.close = () => {
+    pools[database].release = () => {}
+    return pools[database]
+    // let conn = await pools[database].getConnection()
+    /* conn.close = () => {
       // conn.destroy()
-
+      console.log('RELEASE')
       conn.release()
-    }
-    return conn
-
-    /*
-    conns[database] = await mysql.createConnection(credentials)
-    return conns[database] */
+    } */
+    // return conn
   }
 }
