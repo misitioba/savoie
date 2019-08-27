@@ -11,8 +11,6 @@ services:
     entrypoint: 
       - yarn
       - start   
-    volumes:
-      - ./.env:/app/.env  
     networks:
       - default
 
