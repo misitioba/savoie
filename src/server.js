@@ -1,4 +1,5 @@
 require('dotenv').config({ silent: true })
+const argv = require('yargs').argv
 require('colors')
 const express = require('express')
 const server = express()
@@ -108,7 +109,7 @@ function rimraf (glob) {
 
 function listen () {
   var debug = require('debug')(`app:server ${`${Date.now()}`.white}`)
-  var PORT = process.env.PORT || 3000
+  var PORT = argv.PORT || process.env.PORT || 3000
   // debug('LISTEN')
   server.listen(PORT, () => debug(`Listening at ${PORT}`))
   server.timeout = 1000 * 60 * 10

@@ -45,7 +45,8 @@
         "webpack": "^4.36.1"
     },
     "scripts": {
-        "dev": "nodemon src/server.js -e js,css,scss,html,pug --watch src --watch lib --watch apps --ignore 'apps/*/js/**' --ignore 'apps/*/tmp/**' --ignore 'apps/*/pages/**' --ignore 'apps/*/partials/**' --ignore 'apps/*/static/**'",
-        "start": "rm -rf node_modules && ln -s /tmp/node_modules node_modules && node ./src/server.js"
+        "dev": "npx nodemon src/server.js -e js,css,scss,html,pug --watch src --watch lib --watch apps --ignore 'apps/*/js/**' --ignore 'apps/*/tmp/**' --ignore 'apps/*/pages/**' --ignore 'apps/*/partials/**' --ignore 'apps/*/static/**'",
+        "start": "rm -rf node_modules && ln -s /tmp/node_modules node_modules && node ./src/server.js",
+        "dev:docker": "rm -rf node_modules && ln -s /tmp/node_modules node_modules && npx nodemon src/server.js -e js,css,scss,html,pug --watch src --watch lib --watch apps --ignore 'apps/*/js/**' --ignore 'apps/*/tmp/**' --ignore 'apps/*/pages/**' --ignore 'apps/*/partials/**' --ignore 'apps/*/static/**'"
     }
 }

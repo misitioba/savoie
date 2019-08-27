@@ -1,18 +1,19 @@
 version: '3.1'
 
 services:
-  savoie:
+  savoie_dev:
     restart: always
     build: ./
-    container_name: savoie
+    container_name: savoie_dev
     ports:
-      - 7373:3000
+      - 7374:3000
     env_file: .env
-    envs:
-      - NODE_ENV:development
     entrypoint: 
       - yarn
-      - start   
+      - dev:docker
+    volumes:
+      - ./apps:/app/apps
+      - ./src:/app/src   
     networks:
       - default
 

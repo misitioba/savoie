@@ -4,6 +4,19 @@ Official project for https://savoie.misitioba.com
 
 ### LOCAL DEVELOPMENT
 
+#### Without Docker
+
+yarn
+yarn dev
+
+#### Docker
+
+docker-compose -f dev.yaml up
+docker-compose -f dev.yaml up --build
+docker-compose -f dev.yaml down
+docker-compose -f dev.yaml logs -f
+docker-compose -f dev.yaml restart
+
 #### Enviromental variables
 
 - We use a file called .env to set variables, you can create it if doesn't exist. Use env-example as example.
