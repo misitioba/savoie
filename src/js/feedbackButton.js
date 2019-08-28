@@ -4,9 +4,9 @@ import {
 } from './mixins/stylesMixin'
 import './components/canvasDraw'
 import html2canvas from 'html2canvas';
-(async() => {
-    init()
-    window.createFeedBackButton = function({ module_id }) {
+(async () => {
+    //init()
+    window.createFeedBackButton = function ({ module_id }) {
         init(module_id)
     }
 
@@ -19,25 +19,45 @@ import html2canvas from 'html2canvas';
         new Vue({
             mixins: [stylesMixin],
             el: '.feedbackButtonWrapper',
-            template: styleMixinTmpl(`<div ref="root" class="cmp_fb">
+            template: styleMixinTmpl(`<div ref="root" class="cmp_fb" v-show="visible">
                 <canvas-draw ref="canvas" v-show="!showButton"></canvas-draw>
                 <button @click="openFeedbackDialog" v-show="showButton" class="cmp_fb__btn">Feedback</button>
                 <div class="cmp_fb__dialog" v-show="!showButton">
                     <h3>Feedback</h3>
-                    <p>Envoyez-nous des bugs et des améliorations. Vous pouvez dessiner des lignes avec la souris..</p>
+                    <p class="subtitle">Envoyez-nous des bugs et des améliorations. Vous pouvez dessiner des lignes avec la souris.</p>
+                    <p class="subtitle">English: Send us improvements/bugs. You can draw figures with the mouse.</p>
                     <label class="cmp_fb__dialog__label">Title</label>
                     <input class="cmp_fb__dialog__input" placeholder="I found a bug" v-model="form.title"/>
                     <label class="cmp_fb__dialog__label">Message</label>
                     <textarea class="cmp_fb__dialog__textarea" placeholder="When I click the refresh button, nothings happen" v-model="form.message">
                     </textarea>
-                    <button class="cmp_fb__dialog__send_btn" @click="sendFeedback">Send</button>
+                    <div class="ButtonGroup">
+                        <button class="btn cmp_fb__dialog__send_btn" @click="sendFeedback">Send</button>
+                        <button class="btn cmp_fb__dialog__send_btn" @click="cancel">Cancel</button>
+                    </div>
                 </div>
             </div>`),
             name: 'feedbackButton',
             data() {
                 return {
+                    visible: true,
                     styles: `
+                    .ButtonGroup{
+                        display:flex;
+                        margin-top: 10px;
+                    }
+                    .ButtonGroup button{
+                        
+                        margin-right:5px;
+                    }
+                    h3{
+                        margin:0px;
+                    }
+                    .subtitle{
+                        margin:10px 0px;
+                    }
                     .cmp_fb{
+                        color:white;
                         /*position: fixed;
                         min-width: calc(100vw);
                         height: calc(100vh);
@@ -46,21 +66,22 @@ import html2canvas from 'html2canvas';
                         
                     }
                     .cmp_fb__btn{
-             z-index: 101;
-right: 20px;
-bottom: 5px;
-position: fixed;
-background-color: #e4dccc;
-width: 200px;
-height: 30px;
-cursor: pointer;
-border: 0px;
-color: #2e5b26;
+                        z-index: 101;
+                        right: 20px;
+                        bottom: 5px;
+                        position: fixed;
+                        background-color: #30426a;
+                        width: 80px;
+                        height: 30px;
+                        cursor: pointer;
+                        border: 0px;
+                        color: #fff;
                     }
                     .cmp_fb__btn:hover{
-                        background-color:white;
+                        background-color: #30426a9c;
                     }
                     .cmp_fb__dialog{
+                        font-family:GT Eesti Display, "Helvetica Neue", Helvetica, sans-serif;
                         z-index:101;
                         position: fixed;
 
@@ -71,9 +92,9 @@ color: #2e5b26;
                         display: flex;
                         
                         flex-direction: column;
-                        background: white;
+                        background: olivedrab;
 
-padding: 5px;
+padding: 20px;
 
 border-radius: 5px;
 max-width: 350px;
@@ -83,7 +104,7 @@ max-width: 350px;
 
                     }
                     .cmp_fb__dialog__label{
-
+margin-top:10px;
                     }
                     .cmp_fb__dialog__textarea{
                         min-width: 280px;
@@ -97,11 +118,22 @@ max-width: 350px;
                     form: {
                         title: '',
                         message: ''
+                    },
+                    resizeInterval: null,
+                    escapeBinding: (e) => {
+                        if (e.which == 27) {
+                            this.cancel()
+                        }
+
                     }
                 }
             },
             computed: {},
             methods: {
+                cancel() {
+                    this.showButton = true;
+                    this.$refs.canvas.$emit('clear')
+                },
                 openFeedbackDialog() {
                     this.showButton = false
                 },
@@ -127,7 +159,7 @@ max-width: 350px;
                         this.$refs.canvas.$emit('clear')
                         this.showButton = true
                         alert(`Merci pour votre contribution`)
-                            // downloadURI(uri, `feedback-image-${date}`)
+                        // downloadURI(uri, `feedback-image-${date}`)
                     })
 
                     function dataURItoBlob(dataURI) {
@@ -162,7 +194,19 @@ max-width: 350px;
                     }
                 }
             },
+            destroyed() {
+                clearInterval(this.resizeInterval)
+                $('window, body').off('keyup', this.escapeBinding);
+            },
             mounted() {
+                $('window, body').on('keyup', this.escapeBinding);
+                this.resizeInterval = setInterval(() => {
+                    if (window.innerWidth > 768) {
+                        this.visible = true
+                    } else {
+                        this.visible = false
+                    }
+                }, 1000)
                 console.log('feebackbutton mounted')
             }
         })
