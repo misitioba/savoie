@@ -66,6 +66,7 @@ Vue.component('profile-details', {
                    width: calc(100vw);
                    height: calc(100vh);
                    background-color:rgba(255, 255, 255, 0.5);
+                   z-index: 10;
                }
                .profile_details input{
                     border:0px;
