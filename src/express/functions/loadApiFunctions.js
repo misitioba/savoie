@@ -1,8 +1,8 @@
 var debug = require('debug')(
-        `app:express:api:functions ${`${Date.now()}`.white}`
+  `app:express:api:functions ${`${Date.now()}`.white}`
 )
 module.exports = app => {
-  return async function loadApiFunctions (options = {}) {
+  return async function loadApiFunctions(options = {}) {
     // options.path
 
     var path = require('path')
@@ -43,7 +43,7 @@ module.exports = app => {
   }
 }
 
-function onReady (app, fn, impl, options = {}) {
+function onReady(app, fn, impl, options = {}) {
   // console.log('TRACE DEF', options)
 
   app.api = app.api || []
@@ -57,30 +57,35 @@ function onReady (app, fn, impl, options = {}) {
         optionsScope = options.scope(this) || {}
       }
       var mergedScope = Object.assign({}, this, optionsScope)
-      let r = impl.apply(mergedScope || {}, arguments)
-      if (r instanceof Promise) {
+
+      let r = null //final result
+
+      //middlwares
+      if (options.middlewares) {
+        let args = arguments
         return new Promise(async (resolve, reject) => {
           try {
-            r = await r
-            debug(
-              'api call',
-              fn.name,
-              r instanceof Array
-                ? 'Responded with ' + r.length + ' items'
-                : `Responded with object ${printKeys(r)}`
-            )
-            resolve(r)
+            let res = await Promise.all(options.middlewares.map(m => m.apply(mergedScope, [app])))
+            if (res.find(r => !!r && !!r.err)) {
+              r = res.find(r => !!r.err)
+              resolvePromise(resolve, r)
+            } else {
+              let finalResult = callApiFunction(args)
+              if (finalResult instanceof Promise) {
+                finalResult = await finalResult
+              }
+              resolve(finalResult)
+            }
           } catch (err) {
-            debug(
-              'api call',
-              fn.name,
-              `Responded with error`,
-              `${err.stack}`.red
-            )
-            reject(err)
+            rejectPromise(reject, err)
           }
         })
-      } else {
+      }
+
+      return callApiFunction(arguments)
+
+      async function resolvePromise(resolve, r) {
+        r = await r
         debug(
           'api call',
           fn.name,
@@ -88,18 +93,54 @@ function onReady (app, fn, impl, options = {}) {
             ? 'Responded with ' + r.length + ' items'
             : `Responded with object ${printKeys(r)}`
         )
-        return r
+        resolve(r)
       }
+
+      function rejectPromise(reject, err) {
+        debug(
+          'api call',
+          fn.name,
+          `Responded with error`,
+          `${err.stack}`.red
+        )
+        reject(err)
+      }
+
+      function callApiFunction(args) {
+        if (r === null) {
+          r = impl.apply(mergedScope || {}, args)
+        }
+        if (r instanceof Promise) {
+          return new Promise(async (resolve, reject) => {
+            try {
+              resolvePromise(resolve, r)
+            } catch (err) {
+              rejectPromise(reject, err)
+            }
+          })
+        } else {
+          debug(
+            'api call',
+            fn.name,
+            r instanceof Array
+              ? 'Responded with ' + r.length + ' items'
+              : `Responded with object ${printKeys(r)}`
+          )
+          return r
+        }
+      }
+
+
     }
   }
 }
 
-function onError (err) {
+function onError(err) {
   console.error('ERROR (Function)', err.stack || err)
   process.exit(1)
 }
 
-function printKeys (object = {}) {
+function printKeys(object = {}) {
   if (!object) {
     return object
   }
