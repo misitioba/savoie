@@ -20,9 +20,16 @@ new Vue({
                     loggedUser
                 }) */
     },
+    mounted() {
+
+    },
     methods: {
         onUser(user) {
-            window.user = user
+            if (!user) {
+                this.login()
+            } else {
+                window.user = user
+            }
         },
         login() {
             this.modal = 'login'
@@ -40,6 +47,10 @@ new Vue({
             if (window.onLogin) {
                 window.onLogin()
             }
+            this.form = {
+                email: '',
+                password: ''
+            }
         },
         onLogout() {
             window.user = {
@@ -48,6 +59,8 @@ new Vue({
             if (window.onLogout) {
                 window.onLogout()
             }
+
+            this.login()
         }
     }
 })

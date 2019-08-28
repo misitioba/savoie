@@ -30,9 +30,11 @@ Vue.component('common-header', {
             
         </div>
 
+        <!--
         <div class="logoWrapper" v-show="!isLogged&&!!logo">
         <img class="logo" :src="logo" v-show="!isLogged&&!!logo" ref="logo"/>
         </div>
+        -->
     
         <profile-details v-show="currentModal==='profileDetails'" 
         @pwdchange="logout"
@@ -47,7 +49,7 @@ Vue.component('common-header', {
         bindCollapseOnClickOut() {
             var self = this
             this.unbindCollapseOnClickOut()
-            this.clickOutBinding = function() {
+            this.clickOutBinding = function () {
                 self.toolbarCollapsed = false
             }
             $(document).on('click', this.clickOutBinding)
@@ -83,14 +85,14 @@ Vue.component('common-header', {
     },
     async mounted() {
         setTimeout(() => {
-            this.$refs.logo.style.display = 'block'
+            //this.$refs.logo.style.display = 'block'
         }, 1000)
         try {
             this.user = await api.getLoggedUser()
             this.isLogged = !!this.user
             this.$emit('user', this.user)
         } catch (err) {
-            console.log('guest')
+            this.$emit('user', null)
         }
 
         this.$on('onLoginSuccess', user => {

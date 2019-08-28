@@ -1,6 +1,9 @@
+import {default as stylesMixin, template as stylesTpl} from '../mixins/stylesMixin'
+
 Vue.component('common-login', {
     props: ['logo'],
-    template: `
+    mixins:[stylesMixin],
+    template: stylesTpl(`
         <div class="login_form" ref="root"" @keyup.esc="$emit('close')" tabindex="0">
             <div class="overlay">
                 <div class="form">
@@ -9,14 +12,46 @@ Vue.component('common-login', {
                     <input v-model="form.email" />
                     <label>Mot de passe</label>
                     <input v-model="form.password" type="password" />
-                    <button class="btn" @click="loginWithEmailAndPassword">Login</button>
+                    <div class="btn-group">
+                        <button class="btn" @click="loginWithEmailAndPassword">Login</button>
+                        <button class="btn" @click="createAccount">Create new account</button>
+                    </div>
                 </div>
 
             </div>
         </div>
-    `,
+    `),
     methods: {
+        validateForm(){
+            if(!this.form.email) {
+                alert('email requis/required/requerido')
+                return false
+            }
+            if(!this.form.password){
+                alert('password requis/required/requerida')
+                return false
+            }
+            return true
+        },
+        async createAccount(){
+            if(!this.validateForm()) return
+            try {
+                let user = await api.funql(
+                    {
+                        name:'common_create_account',
+                        args:[Object.assign({}, this.form)]
+                    }
+                )
+                //this.$emit('logged', user)
+                this.loginWithEmailAndPassword()
+            } catch (err) {
+                if (err === 'ALREADY_EXISTS') {
+                    alert("L'email est déjà enregistré / The email is already registered / El correo electrónico ya está registrado.")
+                }
+            }
+        },
         async loginWithEmailAndPassword() {
+            if(!this.validateForm()) return
             try {
                 let user = await api.loginWithEmailAndPassword(
                     Object.assign({}, this.form)
@@ -30,10 +65,7 @@ Vue.component('common-login', {
         }
     },
     async mounted() {
-        let styles = document.createElement('style')
-        styles.setAttribute('scoped', '')
-        styles.innerHTML = this.styles
-        this.$refs.root.appendChild(styles)
+        
     },
     data() {
         return {
@@ -62,7 +94,9 @@ Vue.component('common-login', {
 
                }
                .login_form img{
-                    max-height: 140px;
+                max-height: 170px;
+                max-width: 230px;
+                margin: 0 auto;
                }
                .login_form .form{
                 display: flex;
@@ -72,7 +106,7 @@ Vue.component('common-login', {
                 margin-top: 0px;
                 background: #fff;
                 margin-top: calc(50vh - 230px);
-                padding: 15px 20px 70px 20px;
+                padding: 50px 20px 50px 20px;
                 border-radius: 5px;
                }
                .login_form button{
@@ -81,6 +115,14 @@ Vue.component('common-login', {
                 display: block;
                 
                 max-width: none;
+               }
+
+               .btn-group{
+                display: flex;
+                justify-content: center;
+               }
+               .btn-group button{
+                   margin:5px;
                }
 `
         }
