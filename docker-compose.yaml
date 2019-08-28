@@ -8,8 +8,8 @@ services:
     ports:
       - 7373:3000
     env_file: .env
-    envs:
-      - NODE_ENV:development
+    environment:
+      - NODE_ENV=production
     entrypoint: 
       - yarn
       - start   
