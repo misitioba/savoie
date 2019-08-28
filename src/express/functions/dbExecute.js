@@ -1,6 +1,12 @@
 var debug = require('debug')(`app:dbExecute ${`${Date.now()}`.white}`)
 module.exports = app => {
-  return async function dbExecute (query, params, options = {}) {
+  return async function dbExecute(query, params = [], options = {}) {
+    if (params.filter(p => p === undefined).length > 0) {
+      debug('Undefined passed as parameter', {
+        query,
+        params
+      })
+    }
     let conn = null
     try {
       conn = await app.getMysqlConnection(options)
@@ -21,7 +27,7 @@ module.exports = app => {
       )
       try {
         conn.release()
-      } catch (err) {}
+      } catch (err) { }
       throw err
     }
   }
