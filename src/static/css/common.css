@@ -62,7 +62,7 @@ p {
 }
 
 .app_content {
-    min-height: calc(100vh - 200px);
+    min-height: calc(100vh - 35px);
     max-width: 1200px;
     padding: 20px;
     margin: 0 auto;
