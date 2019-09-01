@@ -95,6 +95,7 @@ module.exports = app => {
             clousureEval(`__handler.fn = ${data.transform}`, {
               __handler,
               moment: require('moment'),
+              args: data.args
             })
             return __handler.fn(result)
           }
