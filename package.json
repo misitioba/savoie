@@ -26,6 +26,7 @@
         "mailgun-js": "^0.22.0",
         "moment": "^2.24.0",
         "moment-timezone": "^0.5.26",
+        "moniker": "^0.1.2",
         "multiparty": "^4.2.1",
         "mysql2": "^1.6.5",
         "node-sass": "^4.12.0",
