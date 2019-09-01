@@ -118,10 +118,10 @@ Vue.component('common-header', {
                     display:none;
                 }
                 .common_header{
-                    background-color: transparent;
-                    min-height: 100px;
-                    display:flex;
-                    justify-content: flex-end;
+                    background-color: #e9f0d200;
+min-height: 35px;
+display: flex;
+justify-content: flex-end;
                 }
                 .common_header h1{
                     font-size: 8px;
@@ -132,7 +132,7 @@ Vue.component('common-header', {
                     justify-self: center;
                 }
                 .common_header .toolbar:hover{
-                    background: #d9c3c0;
+                    background: #30426ab3;
                 }
                 .common_header .toolbar{
                     display: grid;
@@ -140,17 +140,19 @@ Vue.component('common-header', {
                     grid-template-areas: 'el el el';
                     align-self: center;
                     justify-self: flex-end;
-                    background: #e4dccc;
-                    padding: 15px;
-border-radius: 5px 0px 0px 0px;
+                    background: #30426a;
+                    padding: 5px;
+                    border-radius: 5px 0px 0px 5px;
+                    color: white;
                 }
                 .common_header .toolbar_menu{
                     position: absolute;
                     height: -moz-max-content;
                     width: -moz-available;
-                    top: 73px;
-background: #f8e8e8;
-padding: 0px 0px;
+                    top: 31px;
+                    background: #f8e8e8;
+                    padding: 0px 0px;
+                    border-radius: 0px 0px 0px 5px;
                 }
                 .common_header .toolbar_menu a{
                     color:black;
