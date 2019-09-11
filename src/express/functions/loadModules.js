@@ -1,7 +1,7 @@
 module.exports = app => {
-        var debug = require('debug')(`app:modules ${`${Date.now()}`.white}`)
+  var debug = require('debug')(`app:modules ${`${Date.now()}`.white}`)
 
-  async function LoadSingleModule (module) {
+  async function LoadSingleModule(module) {
     let name = module.title
       .split(' ')
       .join('-')
@@ -33,12 +33,12 @@ module.exports = app => {
     app.builder.cwd = ''
   }
 
-  return async function loadModules () {
+  return async function loadModules() {
     debug('loadModules')
     let conn = await app.getMysqlConnection()
-
+    let isProduction = process.env.NODE_ENV === 'production'
     let [modules, fields] = await conn.execute(
-      `SELECT * FROM modules WHERE enabled = 1`,
+      `SELECT * FROM modules ${isProduction ? `WHERE enabled = 1` : ``}`,
       []
     )
     conn.release()
