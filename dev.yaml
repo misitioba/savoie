@@ -17,6 +17,7 @@ services:
       - ./apps:/app/apps
       - ./src:/app/src   
       - ./package.json:/app/package.json
+      - ./.env:/app/.env
     networks:
       - default
 
