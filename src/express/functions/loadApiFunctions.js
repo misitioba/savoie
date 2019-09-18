@@ -18,6 +18,8 @@ module.exports = app => {
 
     var self = {}
 
+    //debug(`Reading ${files.length} api funtions from ${options.path}`)
+
     files.forEach(f => {
       let requirePath = path.join(options.path, f)
       self[f.split('.')[0]] = require(requirePath)
@@ -50,11 +52,14 @@ function onReady(app, fn, impl, options = {}) {
   if (typeof app.api[fn.name] !== 'undefined') {
     debug('API Function file', fn.name, 'exists. Skipping...')
   } else {
-    // debug('API Function file', fn.name, 'loaded')
+    //debug('API Function file', fn.name, 'loaded')
     app.api[fn.name] = function () {
       let optionsScope = {}
       if (typeof options.scope === 'function') {
         optionsScope = options.scope(this) || {}
+      }
+      if (typeof options.scope === 'object') {
+        optionsScope = options.scope
       }
       var mergedScope = Object.assign({}, this, optionsScope)
 

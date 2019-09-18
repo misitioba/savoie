@@ -1,7 +1,7 @@
 {
-    "name": "savoietc",
+    "name": "savoie",
     "version": "0.1.3",
-    "main": "index.js",
+    "main": "./src/server.js",
     "license": "MIT",
     "dependencies": {
         "atob": "^2.1.2",
@@ -10,7 +10,9 @@
         "body-parser": "^1.19.0",
         "btoa": "^1.2.1",
         "buefy": "^0.7.10",
+        "chalk": "^2.4.2",
         "cheerio": "^1.0.0-rc.3",
+        "clear": "^0.1.0",
         "colors": "^1.3.3",
         "cors": "latest",
         "css-loader": "^3.1.0",
@@ -19,9 +21,11 @@
         "express": "^4.17.1",
         "express-mysql-session": "^2.1.0",
         "express-session": "^1.16.2",
+        "figlet": "^1.2.4",
         "fingerprintjs2": "^2.1.0",
         "html2canvas": "^1.0.0-rc.3",
         "import-cdn-js": "^0.0.2",
+        "inquirer": "^7.0.0",
         "lodash": "^4.17.15",
         "mailgun-js": "^0.22.0",
         "moment": "^2.24.0",
@@ -40,15 +44,20 @@
         "rimraf": "^2.6.3",
         "sander": "^0.6.0",
         "scope-css": "^1.2.1",
+        "sh-exec": "^2.1.0",
         "style-loader": "^0.23.1",
         "uniqid": "^5.0.3",
         "vue": "^2.6.10",
         "vue-server-renderer": "^2.6.10",
-        "webpack": "^4.36.1"
+        "webpack": "^4.36.1",
+        "yargs": "^14.0.0"
     },
     "scripts": {
         "dev": "npx nodemon src/server.js -e js,css,scss,html,pug --watch src --watch lib --watch apps --ignore 'apps/*/js/**' --ignore 'apps/*/tmp/**' --ignore 'apps/*/pages/**' --ignore 'apps/*/partials/**' --ignore 'apps/*/static/**'",
         "start": "rm -rf node_modules && ln -s /tmp/node_modules node_modules && node ./src/server.js",
         "dev:docker": "rm -rf node_modules && ln -s /tmp/node_modules node_modules && npx nodemon src/server.js -e js,css,scss,html,pug --watch src --watch lib --watch apps --ignore 'apps/*/js/**' --ignore 'apps/*/tmp/**' --ignore 'apps/*/pages/**' --ignore 'apps/*/partials/**' --ignore 'apps/*/static/**'"
+    },
+    "bin": {
+        "savoie": "./src/server.js"
     }
 }
