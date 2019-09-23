@@ -1,8 +1,11 @@
-import {default as stylesMixin, template as stylesTpl} from '../mixins/stylesMixin'
+import {
+    default as stylesMixin,
+    template as stylesTpl
+} from '../mixins/stylesMixin'
 
 Vue.component('common-login', {
     props: ['logo'],
-    mixins:[stylesMixin],
+    mixins: [stylesMixin],
     template: stylesTpl(`
         <div class="login_form" ref="root"" @keyup.esc="$emit('close')" tabindex="0">
             <div class="overlay">
@@ -22,36 +25,36 @@ Vue.component('common-login', {
         </div>
     `),
     methods: {
-        validateForm(){
-            if(!this.form.email) {
+        validateForm() {
+            if (!this.form.email) {
                 alert('email requis/required/requerido')
                 return false
             }
-            if(!this.form.password){
+            if (!this.form.password) {
                 alert('password requis/required/requerida')
                 return false
             }
             return true
         },
-        async createAccount(){
-            if(!this.validateForm()) return
+        async createAccount() {
+            if (!this.validateForm()) return
             try {
-                let user = await api.funql(
-                    {
-                        name:'common_create_account',
-                        args:[Object.assign({}, this.form)]
-                    }
-                )
-                //this.$emit('logged', user)
+                let user = await api.funql({
+                        name: 'common_create_account',
+                        args: [Object.assign({}, this.form)]
+                    })
+                    // this.$emit('logged', user)
                 this.loginWithEmailAndPassword()
             } catch (err) {
                 if (err === 'ALREADY_EXISTS') {
-                    alert("L'email est déjà enregistré / The email is already registered / El correo electrónico ya está registrado.")
+                    alert(
+                        "L'email est déjà enregistré / The email is already registered / El correo electrónico ya está registrado."
+                    )
                 }
             }
         },
         async loginWithEmailAndPassword() {
-            if(!this.validateForm()) return
+            if (!this.validateForm()) return
             try {
                 let user = await api.loginWithEmailAndPassword(
                     Object.assign({}, this.form)
@@ -64,9 +67,7 @@ Vue.component('common-login', {
             }
         }
     },
-    async mounted() {
-        
-    },
+    async mounted() {},
     data() {
         return {
             form: {
@@ -79,7 +80,7 @@ Vue.component('common-login', {
                    top:0px;
                    width: calc(100vw);
                    height: calc(100vh);
-                   background-color:rgba(255, 255, 255, 0.5);
+                   background-color:rgba(255, 255, 255, 1);
                }
                .login_form input{
                     border:0px;

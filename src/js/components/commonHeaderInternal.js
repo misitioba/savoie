@@ -49,7 +49,7 @@ Vue.component('common-header', {
         bindCollapseOnClickOut() {
             var self = this
             this.unbindCollapseOnClickOut()
-            this.clickOutBinding = function () {
+            this.clickOutBinding = function() {
                 self.toolbarCollapsed = false
             }
             $(document).on('click', this.clickOutBinding)
@@ -85,7 +85,7 @@ Vue.component('common-header', {
     },
     async mounted() {
         setTimeout(() => {
-            //this.$refs.logo.style.display = 'block'
+            // this.$refs.logo.style.display = 'block'
         }, 1000)
         try {
             this.user = await api.getLoggedUser()
@@ -118,7 +118,7 @@ Vue.component('common-header', {
                     display:none;
                 }
                 .common_header{
-                    background-color: #e9f0d200;
+                    background-color: transparent;
 min-height: 35px;
 display: flex;
 justify-content: flex-end;
@@ -132,7 +132,7 @@ justify-content: flex-end;
                     justify-self: center;
                 }
                 .common_header .toolbar:hover{
-                    background: #30426ab3;
+                    background: slateblue;
                 }
                 .common_header .toolbar{
                     display: grid;
@@ -140,8 +140,8 @@ justify-content: flex-end;
                     grid-template-areas: 'el el el';
                     align-self: center;
                     justify-self: flex-end;
-                    background: #30426a;
-                    padding: 5px;
+                    background: #1dabe7;
+                    padding: 10px;
                     border-radius: 5px 0px 0px 5px;
                     color: white;
                 }
@@ -149,10 +149,11 @@ justify-content: flex-end;
                     position: absolute;
                     height: -moz-max-content;
                     width: -moz-available;
-                    top: 31px;
+                    top: 34px;
                     background: #f8e8e8;
                     padding: 0px 0px;
                     border-radius: 0px 0px 0px 5px;
+                    width: -webkit-fill-available;
                 }
                 .common_header .toolbar_menu a{
                     color:black;

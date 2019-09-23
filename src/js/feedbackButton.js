@@ -70,7 +70,7 @@ import html2canvas from 'html2canvas';
                         right: 20px;
                         bottom: 5px;
                         position: fixed;
-                        background-color: #30426a;
+                        background-color: #1dabe7;
                         width: 80px;
                         height: 30px;
                         cursor: pointer;
@@ -78,7 +78,7 @@ import html2canvas from 'html2canvas';
                         color: #fff;
                     }
                     .cmp_fb__btn:hover{
-                        background-color: #30426a9c;
+                        background-color: darkslateblue;
                     }
                     .cmp_fb__dialog{
                         font-family:GT Eesti Display, "Helvetica Neue", Helvetica, sans-serif;
