@@ -1,12 +1,10 @@
 version: '3.1'
 
 services:
-  savoie_dev:
+  savoie:
     restart: always
     build: ./
     container_name: savoie_dev
-    ports:
-      - 7374:3000
     env_file: .env
     environment:
       - NODE_ENV=development
@@ -19,9 +17,9 @@ services:
       - ./package.json:/app/package.json
       - ./.env:/app/.env
     networks:
-      - default
+      - caddy
 
 networks:
-  default:
+  caddy:
     external:
-      name: wraddy_backend
+      name: caddy-node_caddy
