@@ -132,7 +132,7 @@ justify-content: flex-end;
                     justify-self: center;
                 }
                 .common_header .toolbar:hover{
-                    background: slateblue;
+                    background: #edecf3;
                 }
                 .common_header .toolbar{
                     display: grid;
@@ -140,17 +140,17 @@ justify-content: flex-end;
                     grid-template-areas: 'el el el';
                     align-self: center;
                     justify-self: flex-end;
-                    background: #1dabe7;
+                    background: transparent;
                     padding: 10px;
                     border-radius: 5px 0px 0px 5px;
-                    color: white;
+                    color: black;
                 }
                 .common_header .toolbar_menu{
                     position: absolute;
                     height: -moz-max-content;
                     width: -moz-available;
                     top: 34px;
-                    background: #f8e8e8;
+                    background: #ffffff;
                     padding: 0px 0px;
                     border-radius: 0px 0px 0px 5px;
                     width: -webkit-fill-available;

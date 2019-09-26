@@ -1,8 +1,8 @@
 var debug = require('debug')(
-  `app:express:api:functions ${`${Date.now()}`.white}`
+        `app:express:api:functions ${`${Date.now()}`.white}`
 )
 module.exports = app => {
-  return async function loadApiFunctions(options = {}) {
+  return async function loadApiFunctions (options = {}) {
     // options.path
 
     var path = require('path')
@@ -18,7 +18,7 @@ module.exports = app => {
 
     var self = {}
 
-    //debug(`Reading ${files.length} api funtions from ${options.path}`)
+    // debug(`Reading ${files.length} api funtions from ${options.path}`)
 
     files.forEach(f => {
       let requirePath = path.join(options.path, f)
@@ -45,14 +45,14 @@ module.exports = app => {
   }
 }
 
-function onReady(app, fn, impl, options = {}) {
+function onReady (app, fn, impl, options = {}) {
   // console.log('TRACE DEF', options)
 
   app.api = app.api || []
   if (typeof app.api[fn.name] !== 'undefined') {
     debug('API Function file', fn.name, 'exists. Skipping...')
   } else {
-    //debug('API Function file', fn.name, 'loaded')
+    // debug('API Function file', fn.name, 'loaded')
     app.api[fn.name] = function () {
       let optionsScope = {}
       if (typeof options.scope === 'function') {
@@ -63,14 +63,16 @@ function onReady(app, fn, impl, options = {}) {
       }
       var mergedScope = Object.assign({}, this, optionsScope)
 
-      let r = null //final result
+      let r = null // final result
 
-      //middlwares
+      // middlwares
       if (options.middlewares) {
         let args = arguments
         return new Promise(async (resolve, reject) => {
           try {
-            let res = await Promise.all(options.middlewares.map(m => m.apply(mergedScope, [app])))
+            let res = await Promise.all(
+              options.middlewares.map(m => m.apply(mergedScope, [app]))
+            )
             if (res.find(r => !!r && !!r.err)) {
               r = res.find(r => !!r.err)
               resolvePromise(resolve, r)
@@ -89,29 +91,25 @@ function onReady(app, fn, impl, options = {}) {
 
       return callApiFunction(arguments)
 
-      async function resolvePromise(resolve, r) {
+      async function resolvePromise (resolve, r) {
         r = await r
         debug(
           'api call',
           fn.name,
           r instanceof Array
-            ? 'Responded with ' + r.length + ' items'
-            : `Responded with object ${printKeys(r)}`
+            ? 'Responded with ' + r.length + ' items: '
+            : // JSON.stringify(r, null, 4)
+            `Responded with object ${printKeys(r)}`
         )
         resolve(r)
       }
 
-      function rejectPromise(reject, err) {
-        debug(
-          'api call',
-          fn.name,
-          `Responded with error`,
-          `${err.stack}`.red
-        )
+      function rejectPromise (reject, err) {
+        debug('api call', fn.name, `Responded with error`, `${err.stack}`.red)
         reject(err)
       }
 
-      function callApiFunction(args) {
+      function callApiFunction (args) {
         if (r === null) {
           r = impl.apply(mergedScope || {}, args)
         }
@@ -134,18 +132,16 @@ function onReady(app, fn, impl, options = {}) {
           return r
         }
       }
-
-
     }
   }
 }
 
-function onError(err) {
+function onError (err) {
   console.error('ERROR (Function)', err.stack || err)
   process.exit(1)
 }
 
-function printKeys(object = {}) {
+function printKeys (object = {}) {
   if (!object) {
     return object
   }

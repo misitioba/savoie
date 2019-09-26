@@ -4,9 +4,9 @@ import {
 } from './mixins/stylesMixin'
 import './components/canvasDraw'
 import html2canvas from 'html2canvas';
-(async () => {
-    //init()
-    window.createFeedBackButton = function ({ module_id }) {
+(async() => {
+    // init()
+    window.createFeedBackButton = function({ module_id }) {
         init(module_id)
     }
 
@@ -70,15 +70,16 @@ import html2canvas from 'html2canvas';
                         right: 20px;
                         bottom: 5px;
                         position: fixed;
-                        background-color: #1dabe7;
+                        background-color: transparent;
                         width: 80px;
                         height: 30px;
                         cursor: pointer;
                         border: 0px;
-                        color: #fff;
+                        color: black;
+                        font-size:10px;
                     }
                     .cmp_fb__btn:hover{
-                        background-color: darkslateblue;
+                        background-color: #edecf3;
                     }
                     .cmp_fb__dialog{
                         font-family:GT Eesti Display, "Helvetica Neue", Helvetica, sans-serif;
@@ -92,7 +93,8 @@ import html2canvas from 'html2canvas';
                         display: flex;
                         
                         flex-direction: column;
-                        background: olivedrab;
+                        background: white;
+                        color:black;
 
 padding: 20px;
 
@@ -104,7 +106,7 @@ max-width: 350px;
 
                     }
                     .cmp_fb__dialog__label{
-margin-top:10px;
+margin:10px 0px;
                     }
                     .cmp_fb__dialog__textarea{
                         min-width: 280px;
@@ -120,18 +122,17 @@ margin-top:10px;
                         message: ''
                     },
                     resizeInterval: null,
-                    escapeBinding: (e) => {
+                    escapeBinding: e => {
                         if (e.which == 27) {
                             this.cancel()
                         }
-
                     }
                 }
             },
             computed: {},
             methods: {
                 cancel() {
-                    this.showButton = true;
+                    this.showButton = true
                     this.$refs.canvas.$emit('clear')
                 },
                 openFeedbackDialog() {
@@ -159,7 +160,7 @@ margin-top:10px;
                         this.$refs.canvas.$emit('clear')
                         this.showButton = true
                         alert(`Merci pour votre contribution`)
-                        // downloadURI(uri, `feedback-image-${date}`)
+                            // downloadURI(uri, `feedback-image-${date}`)
                     })
 
                     function dataURItoBlob(dataURI) {
@@ -196,10 +197,10 @@ margin-top:10px;
             },
             destroyed() {
                 clearInterval(this.resizeInterval)
-                $('window, body').off('keyup', this.escapeBinding);
+                $('window, body').off('keyup', this.escapeBinding)
             },
             mounted() {
-                $('window, body').on('keyup', this.escapeBinding);
+                $('window, body').on('keyup', this.escapeBinding)
                 this.resizeInterval = setInterval(() => {
                     if (window.innerWidth > 768) {
                         this.visible = true
