@@ -5,8 +5,6 @@ services:
     restart: always
     build: ./
     container_name: savoie
-    ports:
-      - 7373:3000
     env_file: .env
     environment:
       - NODE_ENV=production
@@ -14,9 +12,9 @@ services:
       - yarn
       - start   
     networks:
-      - default
+      - caddy
 
 networks:
-  default:
+  caddy:
     external:
-      name: wraddy_backend
+      name: caddy-node_caddy
