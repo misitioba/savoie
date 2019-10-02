@@ -1,9 +1,20 @@
-var debug = require('debug')(`app:webpackMiddleware ${`${Date.now()}`.white}`)
+var debug = require('debug')(`app:webpack ${`${Date.now()}`.white}`)
 
 module.exports = app => {
   let cache = {}
-  return function webpackMiddleware(options = {}) {
-    return function webpackMiddlewareInstance(req, res) {
+  return function webpackMiddleware (options = {}) {
+    options.output =
+      options.output ||
+      require('path').join(
+        require('osenv').tmpdir(),
+        require('uniqid')() + `-` + require('path').basename(options.entry)
+      )
+
+    console.log('output', options.output)
+
+    return function webpackMiddlewareInstance (req, res) {
+      if (!options.entry) return res.status(404).send() // not found
+
       if (
         process.env.NODE_ENV === 'production' &&
         !!cache[options.entry + '_' + options.output]
@@ -81,7 +92,7 @@ module.exports = app => {
   }
 }
 
-function getModuleSection() {
+function getModuleSection () {
   return {
     rules: [
       {

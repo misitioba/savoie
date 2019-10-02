@@ -52,24 +52,21 @@ module.exports.start = async function start(args) {
   app.get(
     '/analytics.js',
     app.webpackMiddleware({
-      entry: require('path').join(process.cwd(), 'src/js/analytics.js'),
-      output: require('path').join(process.cwd(), 'tmp/analytic.js')
+      entry: require('path').join(process.cwd(), 'src/js/analytics.js')
     })
   )
 
   app.get(
     '/commonHeader.js',
     app.webpackMiddleware({
-      entry: require('path').join(process.cwd(), 'src/js/commonHeader.js'),
-      output: require('path').join(process.cwd(), 'tmp/sharedHeaderApp.js')
+      entry: require('path').join(process.cwd(), 'src/js/commonHeader.js')
     })
   )
 
   app.get(
     '/feedbackButton.js',
     app.webpackMiddleware({
-      entry: require('path').join(process.cwd(), 'src/js/feedbackButton.js'),
-      output: require('path').join(process.cwd(), 'tmp/feedbackButton.js')
+      entry: require('path').join(process.cwd(), 'src/js/feedbackButton.js')
     })
   )
 
