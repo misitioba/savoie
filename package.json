@@ -26,6 +26,7 @@
         "html2canvas": "^1.0.0-rc.3",
         "import-cdn-js": "^0.0.2",
         "inquirer": "^7.0.0",
+        "jest": "^24.9.0",
         "lodash": "^4.17.15",
         "mailgun-js": "^0.22.0",
         "marky-markdown": "^12.0.0",
@@ -56,7 +57,8 @@
     "scripts": {
         "dev": "npx nodemon src/index.js -e js,css,scss,html,pug --watch src --watch lib --watch apps --ignore 'apps/*/js/**' --ignore 'apps/*/tmp/**' --ignore 'apps/*/pages/**' --ignore 'apps/*/partials/**' --ignore 'apps/*/static/**'",
         "start": "rm -rf node_modules && ln -s /tmp/node_modules node_modules && node ./src/index.js",
-        "dev:docker": "rm -rf node_modules && ln -s /tmp/node_modules node_modules && npx nodemon src/index.js -e js,css,scss,html,pug --watch src --watch lib --watch apps --ignore 'apps/*/js/**' --ignore 'apps/*/tmp/**' --ignore 'apps/*/pages/**' --ignore 'apps/*/partials/**' --ignore 'apps/*/static/**'"
+        "dev:docker": "rm -rf node_modules && ln -s /tmp/node_modules node_modules && npx nodemon src/index.js -e js,css,scss,html,pug --watch src --watch lib --watch apps --ignore 'apps/*/js/**' --ignore 'apps/*/tmp/**' --ignore 'apps/*/pages/**' --ignore 'apps/*/partials/**' --ignore 'apps/*/static/**'",
+        "test": "jest --detectOpenHandles"
     },
     "bin": {
         "savoie": "./src/index.js"

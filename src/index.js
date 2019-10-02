@@ -2,6 +2,7 @@
 
 let cli = require('./cli')
 let args = cli.getArgv()
+
 cli.printHeader()
 let mainCommand = args['_'][0]
 if (!mainCommand) {

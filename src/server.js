@@ -25,8 +25,22 @@ module.exports.start = async function start(args) {
     app.builder = require('../lib/builder')
     app.configureFunql()
     await app.generateRestClient()
+    await app.setupDefaultModules()
     await app.loadModules()
     app.use('/api', require('./express/rest_api'))
-    app.listen(PORT, () => debug(`Listening at ${PORT}`))
     app.timeout = 1000 * 60 * 10
+    await listenAsync(app)
+    debug(`Listening at ${PORT}`)
+
+    function listenAsync(app) {
+        return new Promise((resolve, reject) => {
+            try {
+                app.listen(PORT, () => {
+                    resolve()
+                })
+            } catch (err) {
+                reject(err)
+            }
+        })
+    }
 }
