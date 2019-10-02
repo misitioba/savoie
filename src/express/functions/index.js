@@ -1,4 +1,6 @@
-var debug = require('debug')(`app:express:functions ${`${Date.now()}`.white}`)
+var debug = require('debug')(
+        `${'app:functions'.padEnd(15, ' ')} ${`${Date.now()}`.white}`
+)
 
 module.exports = app => {
   app.loadFunctions = createLoadFunctions(app)

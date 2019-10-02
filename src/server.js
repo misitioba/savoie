@@ -1,101 +1,116 @@
 const express = require('express')
-const server = express()
+const app = express()
 
 module.exports.start = async function start(args) {
-        let PORT = args.port || process.env.PORT || 3000
+        var debug = require('debug')(
+                `${'app:server'.padEnd(15, ' ')} ${`${Date.now()}`.white}`
+  )
 
-        require('./express/functions')(server)
+  let PORT = args.port || process.env.PORT || 3000
 
-        const bodyParser = require('body-parser')
-        server.use(
-            bodyParser.json({
-                limit: '50mb'
-            })
-        )
+  require('./express/functions')(app)
 
-        // mysql session
-        server.use(
-            server.getMysqlSessionMiddleware({
-                user: process.env.MYSQL_USER,
-                password: process.env.MYSQL_PWD,
-                host: process.env.MYSQL_HOST,
-                port: process.env.MYSQL_PORT,
-                database: process.env.MYSQL_DATABASE
-            })
-        )
+  const bodyParser = require('body-parser')
+  app.use(
+    bodyParser.json({
+      limit: '50mb'
+    })
+  )
 
-        server.use((req, res, next) => {
-            server.functions.forEach(
-                functionName => (req[functionName] = server[functionName])
-            )
-            next()
-        })
+  // mysql session
+  app.use(
+    app.getMysqlSessionMiddleware({
+      user: process.env.MYSQL_USER,
+      password: process.env.MYSQL_PWD,
+      host: process.env.MYSQL_HOST,
+      port: process.env.MYSQL_PORT,
+      database: process.env.MYSQL_DATABASE
+    })
+  )
 
-        server.use((req, res, next) => {
-                    var debug = require('debug')(`app:request ${`${Date.now()}`.white}`)
+  app.use((req, res, next) => {
+    app.functions.forEach(
+      functionName => (req[functionName] = app[functionName])
+    )
+    next()
+  })
+
+  app.use((req, res, next) => {
     debug(`${req.url}`)
     next()
   })
-  if (process.env.NODE_ENV === 'production') {
-    let distFolder = require('path').join(process.cwd(), 'dist') + '/index.html'
-    await rimraf(distFolder)
-  }
 
-  server.loadApiFunctions({
+  await cleanOutputDirectory()
+
+  app.loadApiFunctions({
     path: require('path').join(process.cwd(), 'src/express/funql_api'),
     scope: {
       // dbName: config.db_name
     }
   })
 
-  server.get(
+  app.get(
     '/analytics.js',
-    server.webpackMiddleware({
+    app.webpackMiddleware({
       entry: require('path').join(process.cwd(), 'src/js/analytics.js'),
       output: require('path').join(process.cwd(), 'tmp/analytic.js')
     })
   )
 
-  server.get(
+  app.get(
     '/commonHeader.js',
-    server.webpackMiddleware({
+    app.webpackMiddleware({
       entry: require('path').join(process.cwd(), 'src/js/commonHeader.js'),
       output: require('path').join(process.cwd(), 'tmp/sharedHeaderApp.js')
     })
   )
 
-  server.get(
+  app.get(
     '/feedbackButton.js',
-    server.webpackMiddleware({
+    app.webpackMiddleware({
       entry: require('path').join(process.cwd(), 'src/js/feedbackButton.js'),
       output: require('path').join(process.cwd(), 'tmp/feedbackButton.js')
     })
   )
 
-  var debug = require('debug')(`app:server ${`${Date.now()}`.white}`)
+  app.builder = require('../lib/builder')
+  app.configureFunql()
+  await app.generateRestClient()
+  await app.loadModules()
 
-  server.builder = require('../lib/builder')
-  server.configureFunql()
-  await server.generateRestClient()
-  debug('loading modules')
-  await server.loadModules()
+  app.use('/', express.static('dist'))
+  app.use('/static', express.static('src/static'))
+  app.use('/api', require('./express/rest_api'))
 
-  server.use('/', express.static('dist'))
-  server.use('/static', express.static('src/static'))
-  server.use('/api', require('./express/rest_api'))
+  app.get('/health', (req, res) => res.send('alive'))
+  app.get('/version', async (req, res) =>
+    res.send(
+      JSON.parse(
+        (await require('sander').readFile(
+          require('path').join(process.cwd(), 'package.json')
+        )).toString('utf-8')
+      ).version
+    )
+  )
 
-  var debug = require('debug')(`app:server ${`${Date.now()}`.white}`)
-  server.listen(PORT, () => debug(`Listening at ${PORT}`))
-  server.timeout = 1000 * 60 * 10
+  app.listen(PORT, () => debug(`Listening at ${PORT}`))
+  app.timeout = 1000 * 60 * 10
 }
 
-function rimraf (glob) {
-  var debug = require('debug')(`app:rimraf ${`${Date.now()}`.white}`)
-  debug(glob)
-  return new Promise((resolve, reject) => {
-    require('rimraf')(glob, err => {
-      if (err) reject(err)
-      else resolve()
+async function cleanOutputDirectory () {
+  let distFolder = require('path').join(process.cwd(), 'dist') + '**'
+  await rimraf(distFolder)
+
+  function rimraf (glob) {
+    var debug = require('debug')(
+      `${'app:rimraf'.padEnd(15, ' ')} ${`${Date.now()}`.white}`
+    )
+    debug(glob)
+    return new Promise((resolve, reject) => {
+      require('rimraf')(glob, err => {
+        if (err) reject(err)
+        else resolve()
+      })
     })
-  })
+  }
 }

@@ -1,7 +1,9 @@
 module.exports = app => {
-  var debug = require('debug')(`app:modules ${`${Date.now()}`.white}`)
+        var debug = require('debug')(
+                `${'app:modules'.padEnd(15, ' ')} ${`${Date.now()}`.white}`
+  )
 
-  async function LoadSingleModule(module) {
+  async function LoadSingleModule (module) {
     let name = module.title
       .split(' ')
       .join('-')
@@ -33,8 +35,7 @@ module.exports = app => {
     app.builder.cwd = ''
   }
 
-  return async function loadModules() {
-    debug('loadModules')
+  return async function loadModules () {
     let conn = await app.getMysqlConnection()
     let isProduction = process.env.NODE_ENV === 'production'
     let [modules, fields] = await conn.execute(
@@ -47,5 +48,10 @@ module.exports = app => {
     })
     const sequential = require('promise-sequential')
     await sequential(promises)
+    debug(
+      `${modules.length} modules loaded from ${
+        process.env.MYSQL_DATABASE
+      }.modules`
+    )
   }
 }
