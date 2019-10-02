@@ -14,19 +14,32 @@ module.exports.start = async function start(args) {
 
     await app.cleanOutputDirectory()
 
-    app.loadApiFunctions({
-        path: require('path').join(process.cwd(), 'src/express/funql_api'),
-        scope: {
-            // dbName: config.db_name
-        }
+    const funqlApi = require('funql-api')
+    await funqlApi.loadFunctionsFromFolder({
+        path: require('path').join(process.cwd(), 'src/express/funql_api')
     })
 
     await app.setupServerCommonRoutes()
     app.builder = require('../lib/builder')
-    app.configureFunql()
+
     await app.generateRestClient()
     await app.setupDefaultModules()
     await app.loadModules()
+
+    funqlApi.middleware(app, {
+        attachToExpress: true,
+        allowGet: true,
+        allowOverwrite: false,
+        postMiddlewares: [
+            function(req, res, next) {
+                // console.log('QWEASD', req.body, Object.keys(app.api))
+                next()
+            },
+            app.authenticateUser(),
+            require('cors')()
+        ]
+    })
+
     app.use('/api', require('./express/rest_api'))
     app.timeout = 1000 * 60 * 10
     await listenAsync(app)

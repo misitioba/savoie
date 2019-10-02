@@ -2,7 +2,7 @@
 node_modules
 dist
 !apps/readme.md
-!apps/console
+!apps/console/**
 apps/**
 *.log
 tmp

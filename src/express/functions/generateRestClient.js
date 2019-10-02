@@ -25,7 +25,10 @@ module.exports = app => {
                 name: 'funql',
                 handler: async function(p = {}) {
                     if (window._funqlGetMode) {
-                        return window.api.funqlGet(`${window.api.funqlEndpointURL}funql`, p)
+                        return window.api.funqlGet(
+                            `${window.api.funqlEndpointURL}funql-api`,
+                            p
+                        )
                     }
 
                     if (!(p.args instanceof Array)) {
@@ -55,7 +58,7 @@ module.exports = app => {
                         p = formData
                         query = `multiparty=1`
                         let r = await fetch(
-                            `${window.api.funqlEndpointURL}funql?${query}`, {
+                            `${window.api.funqlEndpointURL}funql-api?${query}`, {
                                 method: 'POST',
                                 body: formData
                             }
@@ -63,7 +66,10 @@ module.exports = app => {
                         return r.json()
                     }
 
-                    return axios.post(`${window.api.funqlEndpointURL}funql?${query}`, p)
+                    return axios.post(
+                        `${window.api.funqlEndpointURL}funql-api?${query}`,
+                        p
+                    )
                 }
             }
         ]
@@ -118,7 +124,9 @@ module.exports = app => {
                       }
                     }).catch(onError)
                     function onError(err){
-                        console.warn('api ${m.name}', err.stack || err)
+                        console.warn('api ${
+  m.name
+}',p.name||'', err.stack || err)
                         reject(err)
                     }
                 })

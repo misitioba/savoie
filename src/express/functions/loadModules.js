@@ -25,7 +25,7 @@ module.exports = app => {
                 await require(requirePath)(app, module)
                     // debug(`${module.title} loaded as ${name}`)
             } catch (err) {
-                debug(`${module.title} load error`, {
+                debug(`${module.title} failed to load`, {
                     err: err.stack
                 })
             }

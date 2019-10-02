@@ -3,12 +3,11 @@ var debug = require('debug')(`app:webpack ${`${Date.now()}`.white}`)
 module.exports = app => {
   let cache = {}
   return function webpackMiddleware (options = {}) {
-    options.output =
-      options.output ||
-      require('path').join(
-        require('osenv').tmpdir(),
-        require('uniqid')() + `-` + require('path').basename(options.entry)
-      )
+    // options.output is deprecated, it will be completed automatically
+    options.output = require('path').join(
+      require('osenv').tmpdir(),
+      require('uniqid')() + `-` + require('path').basename(options.entry)
+    )
 
     return function webpackMiddlewareInstance (req, res) {
       if (!options.entry) return res.status(404).send() // not found
@@ -96,6 +95,46 @@ function getModuleSection () {
       {
         test: /\.css$/i,
         use: ['style-loader', 'css-loader']
+      },
+      {
+        test: /\.m?js$/,
+        exclude: /(node_modules|bower_components)/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: [
+              '@babel/preset-env',
+              [
+                '@babel/preset-react',
+                {
+                  pragma: 'dom', // default pragma is React.createElement
+                  pragmaFrag: 'DomFrag', // default is React.Fragment
+                  throwIfNamespace: false // defaults to true
+                }
+              ]
+            ],
+            plugins: [
+              [
+                '@babel/plugin-transform-react-jsx',
+                {
+                  // pragma: 'Preact.h', // default pragma is React.createElement
+                  // pragmaFrag: 'Preact.Fragment', // default is React.Fragment
+                  // throwIfNamespace: false // defaults to true
+                }
+              ],
+              [
+                '@babel/plugin-transform-runtime',
+                {
+                  absoluteRuntime: false,
+                  corejs: false,
+                  helpers: true,
+                  regenerator: true,
+                  useESModules: false
+                }
+              ]
+            ]
+          }
+        }
       }
     ]
   }
