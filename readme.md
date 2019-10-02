@@ -15,17 +15,11 @@ Once in the server, clone the repository, configure your .env file and compile u
 
     docker-compose up -d --build
 
+Use the CLI commands below to populate the initial database correctly.
+
 ## Enviromental variables
 
 - We use a file called .env to set variables, you can create it if doesn't exist. Use env-example as example.
-
-## CDN Cache
-
-Each script from http* will be cached by the server unless you disable cache programatically. Remember, some scripts will fail to cache, such as Google Analytics. Disable cache as follow:
-
-    ```js
-    <script cache="0" src="">
-    ```
 
 ## CLI Commands
 
@@ -44,6 +38,14 @@ Each script from http* will be cached by the server unless you disable cache pro
 - **savoie db createUser --username [email] --password [pwd]**
 
     Create user
+
+## CDN Cache
+
+Each script from http* will be cached by the server unless you disable cache programatically. Remember, some scripts will fail to cache, such as Google Analytics. Disable cache as follow:
+
+    ```js
+    <script cache="0" src="">
+    ```
 
 ## Who uses this
 

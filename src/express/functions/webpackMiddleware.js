@@ -10,8 +10,6 @@ module.exports = app => {
         require('uniqid')() + `-` + require('path').basename(options.entry)
       )
 
-    console.log('output', options.output)
-
     return function webpackMiddlewareInstance (req, res) {
       if (!options.entry) return res.status(404).send() // not found
 
