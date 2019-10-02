@@ -10,6 +10,7 @@ module.exports = app => {
 function createLoadFunctions (app) {
   return function loadFunctions (options) {
     var folderPath = options.path || __dirname
+    // debug(`Lets load functions from ${folderPath}`)
     var sander = require('sander')
     let files = sander.readdirSync(folderPath)
     files = files
@@ -21,6 +22,7 @@ function createLoadFunctions (app) {
     files.forEach(f => {
       self[f.split('.')[0]] = require(folderPath + '/' + f)
     })
+    let count = 0
     Object.keys(self)
       .map((k, index) => {
         var mod = self[k]
@@ -36,6 +38,7 @@ function createLoadFunctions (app) {
         return typeof fn.handler === 'function'
       })
       .forEach(fn => {
+        count++
         let impl = fn.handler(app)
         if (impl instanceof Promise) {
           impl
@@ -45,6 +48,11 @@ function createLoadFunctions (app) {
           onReady(app, fn, impl, options)
         }
       })
+    debug(
+      `${count} functions loaded from ${folderPath
+        .split(process.cwd())
+        .join('')}`
+    )
   }
 }
 
@@ -54,7 +62,7 @@ function onReady (app, fn, impl, options = {}) {
   } else {
     app.functions = app.functions || []
     app.functions.push(fn.name)
-    // debug('Function file', fn.name, 'loaded')
+    // debug(fn.name.padEnd(30, ' '), `mounted to app.${fn.name}`)
     app[fn.name] = function () {
       var mergedScope = Object.assign({}, this, options.scope || {})
       let r = impl.apply(mergedScope, arguments)

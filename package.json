@@ -1,7 +1,7 @@
 {
     "name": "savoie",
     "version": "0.1.3",
-    "main": "./src/server.js",
+    "main": "./src/index.js",
     "license": "MIT",
     "dependencies": {
         "atob": "^2.1.2",
@@ -42,7 +42,7 @@
         "promise-sequential": "^1.1.1",
         "pug": "^2.0.4",
         "puppeteer": "^1.18.1",
-        "rimraf": "^2.6.3",
+        "rimraf": "^3.0.0",
         "sander": "^0.6.0",
         "scope-css": "^1.2.1",
         "sh-exec": "^2.1.0",
@@ -54,11 +54,11 @@
         "yargs": "^14.0.0"
     },
     "scripts": {
-        "dev": "npx nodemon src/server.js -e js,css,scss,html,pug --watch src --watch lib --watch apps --ignore 'apps/*/js/**' --ignore 'apps/*/tmp/**' --ignore 'apps/*/pages/**' --ignore 'apps/*/partials/**' --ignore 'apps/*/static/**'",
-        "start": "rm -rf node_modules && ln -s /tmp/node_modules node_modules && node ./src/server.js",
-        "dev:docker": "rm -rf node_modules && ln -s /tmp/node_modules node_modules && npx nodemon src/server.js -e js,css,scss,html,pug --watch src --watch lib --watch apps --ignore 'apps/*/js/**' --ignore 'apps/*/tmp/**' --ignore 'apps/*/pages/**' --ignore 'apps/*/partials/**' --ignore 'apps/*/static/**'"
+        "dev": "npx nodemon src/index.js -e js,css,scss,html,pug --watch src --watch lib --watch apps --ignore 'apps/*/js/**' --ignore 'apps/*/tmp/**' --ignore 'apps/*/pages/**' --ignore 'apps/*/partials/**' --ignore 'apps/*/static/**'",
+        "start": "rm -rf node_modules && ln -s /tmp/node_modules node_modules && node ./src/index.js",
+        "dev:docker": "rm -rf node_modules && ln -s /tmp/node_modules node_modules && npx nodemon src/index.js -e js,css,scss,html,pug --watch src --watch lib --watch apps --ignore 'apps/*/js/**' --ignore 'apps/*/tmp/**' --ignore 'apps/*/pages/**' --ignore 'apps/*/partials/**' --ignore 'apps/*/static/**'"
     },
     "bin": {
-        "savoie": "./src/server.js"
+        "savoie": "./src/index.js"
     }
 }
