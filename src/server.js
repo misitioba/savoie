@@ -47,7 +47,18 @@ module.exports.start = async function start(args) {
     app.use('/api', require('./express/rest_api'))
     app.timeout = 1000 * 60 * 10
     await listenAsync(app)
-    debug(`Listening at ${PORT}`)
+    let nodeEnv =
+        process.env.NODE_ENV === 'production' ? 'production' : 'development'
+    let listeningMessage = `Listening at ${PORT} (${nodeEnv})`
+    debug(listeningMessage)
+
+    if (!process.env.DEBUG) {
+        console.log(
+            `For debugging, enable debug with process.env.DEBUG=app*,funql* (https://www.npmjs.com/package/debug)`
+            .blue
+        )
+        console.log(listeningMessage.green)
+    }
 
     function listenAsync(app) {
         return new Promise((resolve, reject) => {

@@ -4,6 +4,8 @@
     "main": "./src/index.js",
     "license": "MIT",
     "dependencies": {
+        "@babel/cli": "^7.6.2",
+        "@babel/core": "^7.6.2",
         "@babel/plugin-transform-react-jsx": "^7.3.0",
         "@babel/plugin-transform-regenerator": "^7.4.5",
         "@babel/plugin-transform-runtime": "^7.6.2",
@@ -12,6 +14,7 @@
         "@jaredpalmer/after": "^1.3.1",
         "atob": "^2.1.2",
         "axios": "^0.19.0",
+        "babel-loader": "^8.0.6",
         "bcrypt": "^3.0.6",
         "body-parser": "^1.19.0",
         "btoa": "^1.2.1",
@@ -21,6 +24,7 @@
         "clear": "^0.1.0",
         "colors": "^1.3.3",
         "cors": "latest",
+        "cross-env": "^6.0.3",
         "crypto-js": "^3.1.9-1",
         "css-loader": "^3.1.0",
         "debug": "^4.1.1",
@@ -70,7 +74,8 @@
     },
     "scripts": {
         "dev": "npx nodemon src/index.js -e js,css,scss,html,pug --watch src --watch lib --watch apps --ignore 'apps/*/js/**' --ignore 'apps/*/tmp/**' --ignore 'apps/*/pages/**' --ignore 'apps/*/partials/**' --ignore 'apps/*/static/**'",
-        "start": "rm -rf node_modules && ln -s /tmp/node_modules node_modules && node ./src/index.js",
+        "start": "cross-env NODE_ENV=production node ./src/index.js",
+        "docker:start": "rm -rf node_modules && ln -s /tmp/node_modules node_modules && node ./src/index.js",
         "dev:docker": "rm -rf node_modules && ln -s /tmp/node_modules node_modules && npx nodemon src/index.js -e js,css,scss,html,pug --watch src --watch lib --watch apps --ignore 'apps/*/js/**' --ignore 'apps/*/tmp/**' --ignore 'apps/*/pages/**' --ignore 'apps/*/partials/**' --ignore 'apps/*/static/**'",
         "test": "jest --detectOpenHandles"
     },

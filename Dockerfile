@@ -1,15 +1,12 @@
-FROM node:alpine
+FROM node:10.16.3-alpine
 
-RUN apk add --no-cache python python-dev python3 python3-dev \
-    linux-headers build-base bash git ca-certificates && \
-    python3 -m ensurepip && \
-    rm -r /usr/lib/python*/ensurepip && \
-    pip3 install --upgrade pip setuptools && \
-    if [ ! -e /usr/bin/pip ]; then ln -s pip3 /usr/bin/pip ; fi && \
-rm -r /root/.cache
+RUN apk --no-cache add --virtual native-deps \
+    g++ gcc libgcc libstdc++ linux-headers autoconf automake make nasm python git && \
+    npm install --quiet node-gyp -g
+
 WORKDIR /tmp
 COPY package.json .
-RUN mkdir /node_modules && yarn
+RUN mkdir /node_modules && npm install --quiet
 RUN npm config set unsafe-perm true
 WORKDIR /app
 COPY . /app
