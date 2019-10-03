@@ -38,13 +38,8 @@ module.exports = async(app, config) => {
         params: [app],
         middlewares: [
             async function(app) {
-                let publicFunctions = ['login']
-                if (publicFunctions.includes(this.name)) {
+                if (await app.api.auth.authorizeRequest(this.req.body)) {
                     return true
-                } else {
-                    if (await app.api.auth.authorizeRequest(this.req.body)) {
-                        return true
-                    }
                 }
                 return {
                     err: 401
