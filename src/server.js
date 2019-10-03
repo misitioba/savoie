@@ -16,6 +16,7 @@ module.exports.start = async function start(args) {
 
     const funqlApi = require('funql-api')
     await funqlApi.loadFunctionsFromFolder({
+        params: [app],
         path: require('path').join(process.cwd(), 'src/express/funql_api')
     })
 
