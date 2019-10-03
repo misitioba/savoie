@@ -1,10 +1,15 @@
 module.exports = async(app, config) => {
     var debug = app.getDebugInstance('console')
 
+    app.use(
+        config.getRouteName(),
+        require('express').static(config.getPath('src/static'))
+    )
+
     app.get(
         config.getRouteName('bundle.js'),
         app.webpackMiddleware({
-            entry: config.getPath('src/main.js')
+            entry: config.getPath('src/index.js')
         })
     )
 
