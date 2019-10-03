@@ -31,6 +31,9 @@ module.exports.start = async function start(args) {
         attachToExpress: true,
         allowGet: true,
         allowOverwrite: false,
+        transformScope: {
+            moment: require('moment-timezone')
+        },
         postMiddlewares: [
             function(req, res, next) {
                 // console.log('QWEASD', req.body, Object.keys(app.api))
