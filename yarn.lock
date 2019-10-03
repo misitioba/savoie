@@ -3564,10 +3564,10 @@ function-bind@^1.1.1:
   resolved "https://registry.yarnpkg.com/function-bind/-/function-bind-1.1.1.tgz#a56899d3ea3c9bab874bb9773b7c5ede92f4895d"
   integrity sha512-yIovAzMX49sF8Yl58fSCWJ5svSLuaibPxXQJFLmBObTuCr0Mf1KiPopGM9NiFjiYBCbfaa2Fh6breQ6ANVTI0A==
 
-funql-api@^1.1.4:
-  version "1.1.4"
-  resolved "https://registry.yarnpkg.com/funql-api/-/funql-api-1.1.4.tgz#4a3b52fc088db770a8a407943c1c4760f2193652"
-  integrity sha512-f3hE1bKMkmKT5YwnEYzo737FERsAqKnXnuaR2Yu6YmZHrRDj7bIwJAalZAJ6GDJl4xbe8ueGQiaNre/5245CgA==
+funql-api@^1.1.5:
+  version "1.1.5"
+  resolved "https://registry.yarnpkg.com/funql-api/-/funql-api-1.1.5.tgz#d41d118f8892b103ccfb857970a8ac94b13f676d"
+  integrity sha512-waSPBxBFQmnICiGImk8//GU17bcgY+NMDmxj/BijkDLGjUSXf3wA84QB0lGhJkbNaqXoWxmyZlIxfgB3PldJvg==
   dependencies:
     colors "^1.3.3"
     cors "^2.8.5"
