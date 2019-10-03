@@ -10,7 +10,9 @@ services:
       - NODE_ENV=production
     entrypoint: 
       - yarn
-      - docker:start   
+      - start   
+    volumes:
+      - ./:/app
     networks:
       - caddy
 
