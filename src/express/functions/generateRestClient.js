@@ -66,6 +66,10 @@ module.exports = app => {
                         return r.json()
                     }
 
+                    if (query === '') {
+                        query = `name=${p.name}&ns=${p.namespace}`
+                    }
+
                     return axios.post(
                         `${window.api.funqlEndpointURL}funql-api?${query}`,
                         p
