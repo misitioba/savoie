@@ -19,7 +19,7 @@ module.exports.printHeader = () => {
 
 module.exports.getArgv = () => {
     return yargs
-        .command('db <operation> [operationParam]', 'db Operation', function(
+        .command('db <operation> [operationParam]', 'db Operation', function (
             yargs
         ) {
             return yargs
@@ -41,11 +41,11 @@ module.exports.getArgv = () => {
                 })
         })
 
-    .help().argv
+        .help().argv
 }
 
-module.exports.execute = async mainCommand => {
-    
+module.exports.execute = async (mainCommand, args) => {
+
 
     if (mainCommand === 'db') {
         const app = require('express')
@@ -129,7 +129,7 @@ module.exports.execute = async mainCommand => {
                     name: 'confirm',
                     default: true,
                     message: `Populate existing database '${dbName}' ? (db must be empty)`,
-                }, ])
+                },])
 
                 if (!answers.confirm) {
                     console.log('Aborting..')
@@ -141,7 +141,7 @@ module.exports.execute = async mainCommand => {
                     r = await app.dbExecute(`show tables`, [], {
                         dbName,
                     })
-                } catch (err) {}
+                } catch (err) { }
 
                 if (r.length > 0 && !args.force) {
                     debug(`Database ${dbName} is not empty`.red)

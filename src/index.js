@@ -12,5 +12,5 @@ if (!mainCommand) {
             console.log(err)
         })
 } else {
-    cli.execute(mainCommand)
+    cli.execute(mainCommand, args)
 }
