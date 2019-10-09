@@ -37,6 +37,8 @@ CREATE TABLE `modules`
 (255) DEFAULT NULL,
   `db_name` varchar
 (255) DEFAULT NULL,
+ `updated_at` bigint
+(20) DEFAULT NULL,
   PRIMARY KEY
 (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
