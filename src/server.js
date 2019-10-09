@@ -6,6 +6,13 @@ module.exports.start = async function start(args) {
 
     var debug = app.getDebugInstance('server')
 
+    let pkg = require('sander').readFileSync(
+        __dirname.substring(0, __dirname.lastIndexOf('/')),
+        'package.json'
+    )
+    pkg = JSON.parse(pkg.toString('utf-8'))
+    app.pkg = pkg
+
     let PORT = args.port || process.env.PORT || 3000
 
     app.setupBodyParser()
@@ -15,6 +22,7 @@ module.exports.start = async function start(args) {
     await app.cleanOutputDirectory()
 
     const funqlApi = require('funql-api')
+    app.funqlApi = funqlApi
     await funqlApi.loadFunctionsFromFolder({
         params: [app],
         path: require('path').join(process.cwd(), 'src/express/funql_api')
@@ -31,17 +39,11 @@ module.exports.start = async function start(args) {
         attachToExpress: true,
         allowGet: true,
         allowOverwrite: false,
+        allowCORS: true,
         transformScope: {
             moment: require('moment-timezone')
         },
-        postMiddlewares: [
-            function(req, res, next) {
-                // console.log('QWEASD', req.body, Object.keys(app.api))
-                next()
-            },
-            app.authenticateUser(),
-            require('cors')()
-        ]
+        postMiddlewares: [app.authenticateUser()]
     })
 
     app.use('/api', require('./express/rest_api'))
@@ -49,7 +51,9 @@ module.exports.start = async function start(args) {
     await listenAsync(app)
     let nodeEnv =
         process.env.NODE_ENV === 'production' ? 'production' : 'development'
-    let listeningMessage = `Listening at ${PORT} (${nodeEnv})`
+    let listeningMessage = `Listening on PORT ${PORT}, ${nodeEnv}, version ${
+    app.pkg.version
+  }`
     debug(listeningMessage)
 
     if (!process.env.DEBUG) {
