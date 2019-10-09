@@ -9,6 +9,7 @@ module.exports = app => {
 
             try {
                 module.name = name
+                module.dbName = module.db_name
                 let requirePath = require('path').join(process.cwd(), 'apps', module.name)
                 module.basePath = requirePath
                 app.builder.distFolder = `dist/${name}`
@@ -22,8 +23,11 @@ module.exports = app => {
                         return require('path').join('/' + module.name, p)
                     }
                     // debug(`${module.title} loading... ${name}`)
-                await require(requirePath)(app, module)
-                    // debug(`${module.title} loaded as ${name}`)
+                let moduleResponse = require(requirePath)(app, module)
+                if (moduleResponse instanceof Promise) {
+                    moduleResponse = await moduleResponse
+                }
+                // debug(`${module.title} loaded as ${name}`)
             } catch (err) {
                 debug(`${module.title} failed to load`, {
                     err: err.stack
