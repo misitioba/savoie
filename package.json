@@ -1,17 +1,17 @@
 {
     "name": "savoie",
-    "version": "0.2.1",
+    "version": "0.2.3",
     "main": "./src/index.js",
     "license": "MIT",
     "dependencies": {
         "@babel/cli": "^7.6.2",
         "@babel/core": "^7.6.2",
+        "@babel/plugin-proposal-class-properties": "^7.5.5",
         "@babel/plugin-transform-react-jsx": "^7.3.0",
         "@babel/plugin-transform-regenerator": "^7.4.5",
         "@babel/plugin-transform-runtime": "^7.6.2",
         "@babel/preset-env": "^7.6.2",
         "@babel/preset-react": "^7.0.0",
-        "@jaredpalmer/after": "^1.3.1",
         "atob": "^2.1.2",
         "axios": "^0.19.0",
         "babel-loader": "^8.0.6",
@@ -34,7 +34,7 @@
         "express-session": "^1.16.2",
         "figlet": "^1.2.4",
         "fingerprintjs2": "^2.1.0",
-        "funql-api": "^1.1.5",
+        "funql-api": "^1.1.7",
         "html2canvas": "^1.0.0-rc.3",
         "import-cdn-js": "^0.0.2",
         "inquirer": "^7.0.0",
@@ -45,7 +45,9 @@
         "marky-markdown": "^12.0.0",
         "moment": "^2.24.0",
         "moment-timezone": "^0.5.26",
+        "mongodb": "^3.3.2",
         "moniker": "^0.1.2",
+        "montpesites": "^1.1.7",
         "multiparty": "^4.2.1",
         "mysql2": "^1.6.5",
         "node-sass": "^4.12.0",
@@ -73,10 +75,8 @@
         "yargs": "^14.0.0"
     },
     "scripts": {
-        "dev": "npx nodemon src/index.js -e js,css,scss,html,pug --watch src --watch lib --watch apps --ignore 'apps/*/js/**' --ignore 'apps/*/tmp/**' --ignore 'apps/*/pages/**' --ignore 'apps/*/partials/**' --ignore 'apps/*/static/**'",
-        "start": "cross-env NODE_ENV=production node ./src/index.js",
-        "docker:start": "rm -rf node_modules && ln -s /tmp/node_modules node_modules && node ./src/index.js",
-        "dev:docker": "rm -rf node_modules && ln -s /tmp/node_modules node_modules && npx nodemon src/index.js -e js,css,scss,html,pug --watch src --watch lib --watch apps --ignore 'apps/*/js/**' --ignore 'apps/*/tmp/**' --ignore 'apps/*/pages/**' --ignore 'apps/*/partials/**' --ignore 'apps/*/static/**'",
+        "dev": "npx nodemon src/index.js -e js,css,scss,html,pug --watch src --watch lib --ignore 'apps/*/js/**' --ignore 'apps/*/tmp/**' --ignore 'apps/*/pages/**' --ignore 'apps/*/partials/**' --ignore 'apps/*/static/**' --watch 'apps/*/index.js'",
+        "start": "rm -rf node_modules && ln -s /tmp/node_modules node_modules && node ./src/index.js",
         "test": "jest --detectOpenHandles"
     },
     "bin": {
