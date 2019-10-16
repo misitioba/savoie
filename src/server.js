@@ -21,7 +21,7 @@ module.exports.start = async function start(args) {
 
     await app.cleanOutputDirectory()
 
-    const funqlApi = require('../../funql-api')
+    const funqlApi = require('funql-api')
     app.funqlApi = funqlApi
     await funqlApi.loadFunctionsFromFolder({
         params: [app],
@@ -52,14 +52,14 @@ module.exports.start = async function start(args) {
     let nodeEnv =
         process.env.NODE_ENV === 'production' ? 'production' : 'development'
     let listeningMessage = `Listening on PORT ${PORT}, ${nodeEnv}, version ${
-    app.pkg.version
-  }`
+        app.pkg.version
+        }`
     debug(listeningMessage)
 
     if (!process.env.DEBUG) {
         console.log(
             `For debugging, enable debug with process.env.DEBUG=app*,funql* (https://www.npmjs.com/package/debug)`
-            .blue
+                .blue
         )
         console.log(listeningMessage.green)
     }
