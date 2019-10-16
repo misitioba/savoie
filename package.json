@@ -34,7 +34,7 @@
         "express-session": "^1.16.2",
         "figlet": "^1.2.4",
         "fingerprintjs2": "^2.1.0",
-        "funql-api": "^1.1.7",
+        "funql-api": "^1.1.8",
         "html2canvas": "^1.0.0-rc.3",
         "import-cdn-js": "^0.0.2",
         "inquirer": "^7.0.0",
