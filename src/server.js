@@ -21,7 +21,7 @@ module.exports.start = async function start(args) {
 
     await app.cleanOutputDirectory()
 
-    const funqlApi = require('funql-api')
+    const funqlApi = require('../../funql-api')
     app.funqlApi = funqlApi
     await funqlApi.loadFunctionsFromFolder({
         params: [app],

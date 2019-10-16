@@ -10,3 +10,5 @@ MAILGUN_DOMAIN=misitioba.com
 NODE_ENV=development
 MONGO_URI=mongodb://xxxxxxxxx:xxxxxxxxx@localhost:27017
 MONGO_DB=xxxxxxxxx
+MOMENT_TZ=Europe/Paris
+MOMENT_LOCALE=fr

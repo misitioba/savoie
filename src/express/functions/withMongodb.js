@@ -3,7 +3,8 @@ module.exports = app =>
         return new Promise((resolve, reject) => {
             const MongoClient = require('mongodb').MongoClient
                 // Connection URL
-            const url = process.env.MONGO_URI || 'mongodb://localhost:27017'
+            const url =
+                options.dbUri || process.env.MONGO_URI || 'mongodb://localhost:27017'
                 // Database Name
             const dbName = options.dbName || process.env.MONGO_DB
                 // Use connect method to connect to the server
