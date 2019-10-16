@@ -3,23 +3,14 @@ version: '3.1'
 services:
   savoie:
     restart: always
-    build: ./
-    container_name: savoie_dev
+    image: node:alpine
+    container_name: savoie_edge
     env_file: .env
-    environment:
-      - NODE_ENV=development
+    working_dir: /app
     entrypoint: 
       - yarn
-      - dev:docker
+      - dev   
     volumes:
-      - ./apps:/app/apps
-      - ./src:/app/src   
-      - ./package.json:/app/package.json
-      - ./.env:/app/.env
-    networks:
-      - caddy
-
-networks:
-  caddy:
-    external:
-      name: caddy-node_caddy
+      - ./:/app
+    ports:
+      - 3600:3600
