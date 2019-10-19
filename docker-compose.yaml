@@ -1,4 +1,4 @@
-version: '3.1'
+version: "3.1"
 
 services:
   savoie:
@@ -8,9 +8,9 @@ services:
     env_file: .env
     environment:
       - NODE_ENV=production
-    entrypoint: 
+    entrypoint:
       - yarn
-      - start   
+      - start:docker
     volumes:
       - ./:/app
     networks:

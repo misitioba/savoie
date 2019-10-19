@@ -1,8 +1,18 @@
 {
     "name": "savoie",
-    "version": "0.2.3",
+    "version": "0.2.5",
     "main": "./src/index.js",
-    "license": "MIT",
+    "license": "CoopCycle",
+    "repository": "git@gitlab.com:misitioba/panier-libre.git",
+    "scripts": {
+        "dev": "npx nodemon src/index.js -e js,css,scss,html,pug --watch src --watch lib --ignore 'apps/*/js/**' --ignore 'apps/*/tmp/**' --ignore 'apps/*/pages/**' --ignore 'apps/*/partials/**' --ignore 'apps/*/static/**' --watch 'apps/*/index.js' --watch 'apps/**/api/**'",
+        "start": "cross-env NODE_ENV=production node ./src/index.js",
+        "start:docker": "NODE_PATH=/tmp/node_modules node ./src/index.js",
+        "test": "jest --detectOpenHandles"
+    },
+    "bin": {
+        "savoie": "./src/index.js"
+    },
     "dependencies": {
         "@babel/cli": "^7.6.2",
         "@babel/core": "^7.6.2",
@@ -40,7 +50,7 @@
         "inquirer": "^7.0.0",
         "jest": "^24.9.0",
         "jsxstyle": "^2.1.6",
-        "lodash": "^4.17.15",
+        "lodash": "^4.17.13",
         "mailgun-js": "^0.22.0",
         "marky-markdown": "^12.0.0",
         "moment": "^2.24.0",
@@ -73,18 +83,8 @@
         "vue": "^2.6.10",
         "vue-router": "^3.1.3",
         "vue-server-renderer": "^2.6.10",
+        "vuex": "^3.1.1",
         "webpack": "^4.36.1",
         "yargs": "^14.0.0"
-    },
-    "scripts": {
-        "dev": "npx nodemon src/index.js -e js,css,scss,html,pug --watch src --watch lib --ignore 'apps/*/js/**' --ignore 'apps/*/tmp/**' --ignore 'apps/*/pages/**' --ignore 'apps/*/partials/**' --ignore 'apps/*/static/**' --watch 'apps/*/index.js' --watch 'apps/**/api/**'",
-        "start": "rm -rf node_modules && ln -s /tmp/node_modules node_modules && node ./src/index.js",
-        "test": "jest --detectOpenHandles"
-    },
-    "bin": {
-        "savoie": "./src/index.js"
-    },
-    "devDependencies": {
-        "vuex": "^3.1.1"
     }
 }

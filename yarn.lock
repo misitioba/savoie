@@ -4016,7 +4016,7 @@ function-bind@^1.1.1:
   resolved "https://registry.yarnpkg.com/function-bind/-/function-bind-1.1.1.tgz#a56899d3ea3c9bab874bb9773b7c5ede92f4895d"
   integrity sha512-yIovAzMX49sF8Yl58fSCWJ5svSLuaibPxXQJFLmBObTuCr0Mf1KiPopGM9NiFjiYBCbfaa2Fh6breQ6ANVTI0A==
 
-funql-api@^1.0.4, funql-api@^1.1.7:
+funql-api@^1.0.4:
   version "1.1.7"
   resolved "https://registry.yarnpkg.com/funql-api/-/funql-api-1.1.7.tgz#19c80c9bd9d35c1a2d9c4e91f76312ed7df9f1e4"
   integrity sha512-Pp04hctM4INgIE/lEMcQrCej6bCEgKH1r+99A+P0hLuarFltNNodtV89KVWci4l9BasttMr2MiIlc1lkXoq2Bg==
@@ -4026,6 +4026,18 @@ funql-api@^1.0.4, funql-api@^1.1.7:
     debug "^4.1.1"
     flatted "^2.0.1"
     multiparty "^4.2.1"
+
+funql-api@^1.1.8:
+  version "1.1.8"
+  resolved "https://registry.yarnpkg.com/funql-api/-/funql-api-1.1.8.tgz#01bbfe484cd454f37dc1c234bc2209d0a064067f"
+  integrity sha512-vhMjuUETgsOADWqAjOz5muPDgXCNqZA7Vg8Jk4un/zvUMW31bXDLvC6FaJSaAGvFo6ucflEEASuiS9JD4QaEEA==
+  dependencies:
+    colors "^1.3.3"
+    cors "^2.8.5"
+    debug "^4.1.1"
+    flatted "^2.0.1"
+    multiparty "^4.2.1"
+    prettyjson "^1.2.1"
 
 gauge@~2.7.3:
   version "2.7.4"
