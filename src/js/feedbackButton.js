@@ -208,7 +208,6 @@ margin:10px 0px;
                         this.visible = false
                     }
                 }, 1000)
-                console.log('feebackbutton mounted')
             }
         })
     }
