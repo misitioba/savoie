@@ -23,11 +23,12 @@ module.exports = app => {
             },
             {
                 name: 'funql',
-                handler: async function(p = {}) {
+                handler: async function(p = {}, reportRequest) {
                     if (window._funqlGetMode) {
                         return window.api.funqlGet(
                             `${window.api.funqlEndpointURL}funql-api`,
-                            p
+                            p,
+                            reportRequest
                         )
                     }
 
@@ -70,6 +71,7 @@ module.exports = app => {
                         query = `name=${p.name}&ns=${p.namespace}`
                     }
 
+                    reportRequest(p)
                     return axios.post(
                         `${window.api.funqlEndpointURL}funql-api?${query}`,
                         p
@@ -78,7 +80,7 @@ module.exports = app => {
             }
         ]
 
-        async function funqlGet(uri, p) {
+        async function funqlGet(uri, p, reportRequest) {
             if (p.transform) {
                 p.transform = btoa(p.transform.toString())
                 p.transformEncoded = true
@@ -86,6 +88,10 @@ module.exports = app => {
             let body = btoa(JSON.stringify(p))
             body = body.split('+').join('PLUS')
             try {
+                reportRequest({
+                    body: p,
+                    bodyEncoded: body
+                })
                 let res = await fetch(uri + `?body=${body}`)
                 try {
                     res = await res.json()
@@ -105,38 +111,82 @@ module.exports = app => {
         }
 
         let bundle = `
-            window.api = {
-                funqlEndpointURL: '/',
-                funqlGet:${funqlGet}
-            }
+(()=>{
+
+    let verbose = false
+    if(window.location.origin.indexOf('localhost')!==-1) verbose = true
+    
+    try{
+        var urlParams = new URLSearchParams(location.search);
+        if(urlParams.get('verbose').toString()==='1') verbose = true
+    }catch(err){}
+
+    window.api = {
+        funqlEndpointURL: '/',
+        funqlGet:${funqlGet}
+    }
+    
+    __BUNDLE_PARTIAL__
+
+    
+    function timestamp(){
+        var startDate = new Date();
+        return function(){
+            var endDate   = new Date();
+            var seconds = (endDate.getTime() - startDate.getTime()) / 1000;
+            return seconds+'s';
+        }
+    }
+
+})();
         `
+        let bundlePartial = ''
         methods.forEach(m => {
-            bundle += `api.${m.name} = function(p){
+            bundlePartial += `api.${m.name} = function(p){
                 return new Promise((resolve,reject)=>{
+                    const elapsed = timestamp()
                     var handler = ${m.handler}
-                    console.log('api ${m.name}', p||'(no params)')
-                    handler(p).then(r=>{
+                    
+                    let name = '${m.name} '+(p&&p.name||'')
+
+                    let reportedRequest = p
+
+                    handler(p, rr => reportedRequest = rr).then(r=>{
                       if(!r)  {
                           r = {} //empty response equal to empty object
                             //reject(new Error('empty response'));
                       }
                       if(r && r.err) onError(r.err)
                       if(r && !r.err) {
-                          console.info('api ${m.name}',(p||{}).name,r)
+
+                        if(verbose){
+                          console.info(name,elapsed(),{
+                              request: reportedRequest,
+                              response: r
+                          })
+                        }
+
                           if(r.result) resolve(r.result)
                           else resolve(r)
                       }
                     }).catch(onError)
+                    
                     function onError(err){
-                        console.warn('api ${
-  m.name
-}',p.name||'', err.stack || err)
+
+                        console.warn(name,elapsed(),{
+                            request: reportedRequest,
+                            response: err.stack || err
+                        })
                         reject(err)
                     }
+
+
                 })
             };
             `
         })
+
+        bundle = bundle.split('__BUNDLE_PARTIAL__').join(bundlePartial)
 
         sander.writeFile(path.join(process.cwd(), `dist/api.js`), bundle)
     }
