@@ -4,7 +4,8 @@ const app = express()
 module.exports.start = async function start(args) {
     require('./express/functions')(app)
 
-    var debug = app.getDebugInstance('server')
+    const debug = app.getDebugInstance('server')
+    const debugInfo = app.getDebugInstance('server', 3)
 
     let pkg = require('sander').readFileSync(
         __dirname.substring(0, __dirname.lastIndexOf('/')),
@@ -22,7 +23,7 @@ module.exports.start = async function start(args) {
     await app.cleanOutputDirectory()
 
     const funqlApi = require('funql-api')
-    app.funqlApi = funqlApi
+    app.funqlApi = app.funql = funqlApi
     await funqlApi.loadFunctionsFromFolder({
         params: [app],
         path: require('path').join(process.cwd(), 'src/express/funql_api')
@@ -52,14 +53,14 @@ module.exports.start = async function start(args) {
     let nodeEnv =
         process.env.NODE_ENV === 'production' ? 'production' : 'development'
     let listeningMessage = `Listening on PORT ${PORT}, ${nodeEnv}, version ${
-        app.pkg.version
-        }`
-    debug(listeningMessage)
+    app.pkg.version
+  }`
+    debugInfo(listeningMessage)
 
     if (!process.env.DEBUG) {
         console.log(
             `For debugging, enable debug with process.env.DEBUG=app*,funql* (https://www.npmjs.com/package/debug)`
-                .blue
+            .blue
         )
         console.log(listeningMessage.green)
     }

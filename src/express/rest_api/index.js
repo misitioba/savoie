@@ -1,3 +1,6 @@
 var apiRouter = require('express').Router()
-apiRouter.use('/auth', require('./auth'))
-module.exports = apiRouter
+
+module.exports = app => {
+    apiRouter.use('/auth', require('./auth')(app))
+    return apiRouter
+}
