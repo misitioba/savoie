@@ -13,9 +13,7 @@ module.exports = async(app, config) => {
         })
     )
 
-    let funql = require('funql-api')
-
-    await funql.loadFunctionsFromFolder({
+    await app.funql.loadFunctionsFromFolder({
         namespace: 'auth',
         path: config.getPath('functions'),
         params: [app],
@@ -26,13 +24,13 @@ module.exports = async(app, config) => {
         ]
     })
 
-    await funql.loadFunctionsFromFolder({
+    await app.funql.loadFunctionsFromFolder({
         namespace: config.name,
         path: config.getPath('api/public'),
         params: [app]
     })
 
-    await funql.loadFunctionsFromFolder({
+    await app.funql.loadFunctionsFromFolder({
         namespace: config.name,
         path: config.getPath('api'),
         params: [app],
