@@ -1,6 +1,6 @@
 module.exports = app =>
     async function login(username, password) {
-        if (process.env.MYSQL_PWD == password) {
+        if (process.env.CONSOLE_PWD == password) {
             let token = JSON.stringify({
                 username,
                 expires: Date.now() + 1000 * 60 * 60 * 24
