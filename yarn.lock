@@ -4027,10 +4027,10 @@ funql-api@^1.0.4:
     flatted "^2.0.1"
     multiparty "^4.2.1"
 
-funql-api@^1.1.8:
-  version "1.1.8"
-  resolved "https://registry.yarnpkg.com/funql-api/-/funql-api-1.1.8.tgz#01bbfe484cd454f37dc1c234bc2209d0a064067f"
-  integrity sha512-vhMjuUETgsOADWqAjOz5muPDgXCNqZA7Vg8Jk4un/zvUMW31bXDLvC6FaJSaAGvFo6ucflEEASuiS9JD4QaEEA==
+funql-api@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/funql-api/-/funql-api-1.2.0.tgz#6063e0b93cbcfdb59abed42973b64db6428caa83"
+  integrity sha512-Nd7MLoML/+kLEFX38AMGUutYEZejm3nrggZnKCBP6bgT7lCWIfSoOdC78FQXHhzTBsoZFF7AF9uZc8ghoLQgPw==
   dependencies:
     colors "^1.3.3"
     cors "^2.8.5"
