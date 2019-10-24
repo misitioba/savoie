@@ -16,13 +16,11 @@ new Vue({
     },
     async created() {
         /* let loggedUser = await api.getLoggedUser({})
-                console.log('loggedUser', {
-                    loggedUser
-                }) */
+                    console.log('loggedUser', {
+                        loggedUser
+                    }) */
     },
-    mounted() {
-
-    },
+    mounted() {},
     methods: {
         onUser(user) {
             if (!user) {
@@ -40,16 +38,12 @@ new Vue({
         },
         onLoginSuccess(user) {
             this.closeModal()
-            this.$refs.header.$emit('onLoginSuccess', user)
+            this.$refs.header.setUser(user)
             window.user = {
                 id: user.id
             }
             if (window.onLogin) {
                 window.onLogin()
-            }
-            this.form = {
-                email: '',
-                password: ''
             }
         },
         onLogout() {

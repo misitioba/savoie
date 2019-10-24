@@ -71,7 +71,13 @@ Vue.component('common-header', {
                 return this.$emit('on_login')
             }
             this.toolbarCollapsed = !this.isLogged ? false : !this.toolbarCollapsed
-            e.stopPropagation()
+            e && e.stopPropagation()
+        },
+        setUser(user) {
+            Object.assign(this.user, user)
+            this.isLogged = true
+            console.log('setUser TOOLBAR USER UPDATE', this.user)
+            this.$forceUpdate()
         }
     },
     computed: {
@@ -84,14 +90,10 @@ Vue.component('common-header', {
         }
     },
     async mounted() {
+        window.toggleToolbar = () => this.toggleToolbar()
         this.user = await api.getLoggedUser()
         this.isLogged = !!this.user
         this.$emit('user', this.user)
-
-        this.$on('onLoginSuccess', user => {
-            Object.assign(this.user, user)
-            this.isLogged = true
-        })
         this.bindCollapseOnClickOut()
     },
     data() {

@@ -1,9 +1,18 @@
+import {
+    default as stylesMixin,
+    template as stylesTpl
+} from '../mixins/stylesMixin'
+
 Vue.component('profile-details', {
     props: [],
-    template: `
+    mixins: [stylesMixin],
+    template: stylesTpl(`
         <div class="profile_details" ref="root"" @keyup.esc="$emit('close')" tabindex="0">
             <div class="overlay">
                 <div class="form">
+                    <label>Email </label>
+                    <p class="pdf__quote">(Changement de email)</p>
+                    <input v-model="form.email" placeholder="nouvel email" type="text" />
                     <label>Mot de passe </label>
                     <p class="pdf__quote">(Changement de mot de passe)</p>
                     <input v-model="form.password" type="password" />
@@ -12,41 +21,7 @@ Vue.component('profile-details', {
 
             </div>
         </div>
-    `,
-    methods: {
-        async saveChanges() {
-            if (this.form.password) {
-                await api.funql({
-                    name: 'changeUserPassword',
-                    args: [{
-                        newPassword: this.form.password
-                    }]
-                })
-                this.$emit('close')
-                this.$emit('pwdchange')
-            } else {
-                this.$emit('close')
-            }
-        },
-        async loginWithEmailAndPassword() {
-            try {
-                let user = await api.loginWithEmailAndPassword(
-                    Object.assign({}, this.form)
-                )
-                this.$emit('logged', user)
-            } catch (err) {
-                if (err === 'INVALID_PASSWORD') {
-                    alert("Erreur d'identification")
-                }
-            }
-        }
-    },
-    async mounted() {
-        let styles = document.createElement('style')
-        styles.setAttribute('scoped', '')
-        styles.innerHTML = this.styles
-        this.$refs.root.appendChild(styles)
-    },
+    `),
     data() {
         return {
             form: {
@@ -102,6 +77,27 @@ Vue.component('profile-details', {
                 max-width: none;
                }
 `
+        }
+    },
+    methods: {
+        async saveChanges() {
+            if (!!this.form.password || !!this.form.email) {
+                await api.funql({
+                    name: 'updateUserProfile',
+                    args: [{
+                        email: this.form.email,
+                        newPassword: this.form.password
+                    }]
+                })
+                Object.assign(this.form, {
+                    email: '',
+                    password: ''
+                })
+                this.$emit('close')
+                this.$emit('pwdchange')
+            } else {
+                this.$emit('close')
+            }
         }
     }
 })
