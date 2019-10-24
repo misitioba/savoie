@@ -30,7 +30,7 @@ module.exports.start = async function start(args) {
     })
 
     await app.setupServerCommonRoutes()
-    app.builder = require('./builder')
+    app.builder = require('./builder')(app)
 
     await app.generateRestClient()
     await app.setupDefaultModules()
