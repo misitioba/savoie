@@ -1,7 +1,7 @@
 module.exports = app => {
     const debug = require('./getDebugInstance')(app)('auth', 2)
 
-    function authorizeMiddleware(roles = []) {
+    return function authorizeMiddleware(roles = []) {
         return async function(req, res, next) {
             if (req.session.isLogged && req.session.userId) {
                 req.user = await req.findUser({

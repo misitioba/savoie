@@ -2,7 +2,7 @@ const express = require('express')
 const app = express()
 
 module.exports.start = async function start(args) {
-    require('./express/functions')(app)
+    require('./server/functions')(app)
 
     const debug = app.getDebugInstance('server')
     const debugInfo = app.getDebugInstance('server', 3)
@@ -26,11 +26,11 @@ module.exports.start = async function start(args) {
     app.funqlApi = app.funql = funqlApi
     await funqlApi.loadFunctionsFromFolder({
         params: [app],
-        path: require('path').join(process.cwd(), 'src/express/funql_api')
+        path: require('path').join(process.cwd(), 'src/server/funql_api')
     })
 
     await app.setupServerCommonRoutes()
-    app.builder = require('../lib/builder')
+    app.builder = require('./builder')
 
     await app.generateRestClient()
     await app.setupDefaultModules()
@@ -47,7 +47,7 @@ module.exports.start = async function start(args) {
         postMiddlewares: [app.authenticateUser()]
     })
 
-    app.use('/api', require('./express/rest_api'))
+    app.use('/api', require('./server/rest_api')(app))
     app.timeout = 1000 * 60 * 10
     await listenAsync(app)
     let nodeEnv =

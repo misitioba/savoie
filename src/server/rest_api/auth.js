@@ -1,4 +1,4 @@
-module.exports = function withApp(app) {
+module.exports = app => {
         const router = require('express').Router()
         const createDebug = require('../functions/getDebugInstance')(app)
         const debug = createDebug(`api:auth ${`${Date.now()}`.white}`)
@@ -23,6 +23,8 @@ module.exports = function withApp(app) {
   })
 
   router.post('/', async (req, res) => {
+    debug('API AUTH')
+
     // WIP: new email should be tracked
     var bcrypt = require('bcrypt')
     let hash = await req.getPasswordHashFromUserByEmail(req.body.email)
