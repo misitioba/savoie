@@ -84,16 +84,9 @@ Vue.component('common-header', {
         }
     },
     async mounted() {
-        setTimeout(() => {
-            // this.$refs.logo.style.display = 'block'
-        }, 1000)
-        try {
-            this.user = await api.getLoggedUser()
-            this.isLogged = !!this.user
-            this.$emit('user', this.user)
-        } catch (err) {
-            this.$emit('user', null)
-        }
+        this.user = await api.getLoggedUser()
+        this.isLogged = !!this.user
+        this.$emit('user', this.user)
 
         this.$on('onLoginSuccess', user => {
             Object.assign(this.user, user)
