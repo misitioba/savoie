@@ -1,6 +1,6 @@
 {
     "name": "savoie",
-    "version": "0.2.5",
+    "version": "0.3.0",
     "main": "./src/index.js",
     "license": "CoopCycle",
     "repository": "git@gitlab.com:misitioba/panier-libre.git",
