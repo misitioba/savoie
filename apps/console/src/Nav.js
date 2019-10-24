@@ -33,16 +33,13 @@ export default class Nav extends React.Component {
     window.location.href = '/console/login'
   }
   render () {
+    // <Link to={{ pathname: '/console' }}><NavLink>Dashboard</NavLink></Link>
     return (
       <Root>
-        <Link to={{ pathname: '/console' }}>
-          <NavLink>Dashboard</NavLink>
-        </Link>
         <Link to={{ pathname: '/console/modules' }}>
-          <NavLink>Modules</NavLink>
+          <NavLink> Modules </NavLink>{' '}
         </Link>
-
-        <NavLink onClick={() => this.handleLogout()}>Logout</NavLink>
+        <NavLink onClick={() => this.handleLogout()}> Logout </NavLink>{' '}
       </Root>
     )
   }

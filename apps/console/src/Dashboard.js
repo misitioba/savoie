@@ -1,4 +1,5 @@
 import React from 'react'
+
 import styled from 'styled-components'
 
 const Title = styled.h1`
@@ -12,12 +13,14 @@ export default class Dashboard extends React.Component {
     super()
     this.state = {}
   }
-  async componentDidMount () {}
+  async componentDidMount () {
+    this.props.history.push('/console/modules')
+  }
 
   render () {
     return (
       <div>
-        <Title>Dashboard</Title>
+        <Title> Dashboard </Title>{' '}
       </div>
     )
   }
