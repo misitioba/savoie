@@ -60,7 +60,7 @@
         "montpesites": "^1.1.7",
         "multiparty": "^4.2.1",
         "mysql2": "^1.6.5",
-        "node-sass": "^4.12.0",
+        "node-sass": "^7.0.0",
         "node-schedule": "^1.3.2",
         "nodemon": "^1.19.1",
         "osenv": "^0.1.5",
